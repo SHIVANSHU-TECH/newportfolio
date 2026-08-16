@@ -17,19 +17,19 @@ export default function Contact() {
 
             {/* Email */}
             <div style={{ marginBottom: "3rem" }}>
-              <a href="mailto:shivanshu@gmail.com"
+              <a href="mailto:shivanshushukla2022@gmail.com"
                 style={{ display: "inline-flex", alignItems: "center", gap: "0.75rem", fontSize: "clamp(1rem,1.8vw,1.3rem)", color: "#f0ede8", textDecoration: "none", fontWeight: 300, letterSpacing: "-0.01em", transition: "color 0.3s" }}
                 onMouseEnter={e => (e.currentTarget.style.color = "#c8f542")}
                 onMouseLeave={e => (e.currentTarget.style.color = "#f0ede8")}>
-                shivanshu@gmail.com <span style={{ color: "#4a4a4a" }}>→</span>
+                shivanshushukla2022@gmail.com <span style={{ color: "#4a4a4a" }}>→</span>
               </a>
             </div>
 
             {/* Links */}
             <div style={{ display: "flex", flexWrap: "wrap", gap: "1.5rem", borderTop: "1px solid #1f1f1f", paddingTop: "2rem", marginBottom: "2rem" }}>
               {[
-                { label: "LinkedIn ↗", href: "https://linkedin.com/in/shivanshu-shukla" },
-                { label: "GitHub ↗", href: "https://github.com/shivanshu-shukla" },
+                { label: "LinkedIn ↗", href: "https://www.linkedin.com/in/shivanshushukla07/" },
+                { label: "GitHub ↗", href: "https://github.com/shivanshu-tech" },
               ].map(l => (
                 <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer"
                   style={{ fontSize: "0.75rem", color: "#4a4a4a", textDecoration: "none", letterSpacing: "0.06em", transition: "color 0.3s" }}

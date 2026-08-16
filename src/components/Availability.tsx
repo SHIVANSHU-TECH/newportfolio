@@ -1,7 +1,7 @@
 "use client";
 
 const cols = [
-  { label: "Good fit", items: ["Ambitious products", "Complex AI integrations", "Infrastructure problems", "Automation systems", "Technical rebuilds"] },
+  { label: "Good fit", items: ["Ambitious products", "Complex system integrations", "Infrastructure problems", "Automation systems", "Technical rebuilds"] },
   { label: "Who I work with", items: ["Startup founders", "Business owners", "Creators with scale", "Product companies", "Internal tooling teams"] },
   { label: "How it works", items: ["Problem-first approach", "End-to-end ownership", "Production-quality output", "Direct communication", "No account managers"] },
 ];

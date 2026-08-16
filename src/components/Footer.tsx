@@ -9,15 +9,15 @@ export default function Footer() {
           <div>
             <p style={{ fontSize: "0.7rem", fontWeight: 500, letterSpacing: "0.18em", textTransform: "uppercase", color: "#f0ede8", marginBottom: "0.25rem" }}>SHIVANSHU SHUKLA</p>
             <p style={{ fontSize: "0.62rem", color: "#3a3a3a", letterSpacing: "0.06em" }}>Independent Product Engineer</p>
-            <p style={{ fontSize: "0.62rem", color: "#2a2a2a", letterSpacing: "0.06em" }}>Full-Stack · AI · Automation · Product</p>
+            <p style={{ fontSize: "0.62rem", color: "#2a2a2a", letterSpacing: "0.06em" }}>Full-Stack · Automation · Product · Infrastructure</p>
           </div>
           {/* Right */}
           <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "0.5rem" }}>
             <p style={{ fontSize: "0.62rem", color: "#2a2a2a", letterSpacing: "0.06em" }}>© 2026 Shivanshu Shukla</p>
             <div style={{ display: "flex", gap: "1rem" }}>
               {[
-                { label: "GitHub", href: "https://github.com/shivanshu-shukla" },
-                { label: "LinkedIn", href: "https://linkedin.com/in/shivanshu-shukla" },
+                { label: "GitHub", href: "https://github.com/shivanshu-tech" },
+                { label: "LinkedIn", href: "https://www.linkedin.com/in/shivanshushukla07/" },
               ].map(l => (
                 <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer"
                   style={{ fontSize: "0.62rem", color: "#2a2a2a", textDecoration: "none", letterSpacing: "0.06em", transition: "color 0.3s" }}

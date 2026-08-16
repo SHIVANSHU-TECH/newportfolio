@@ -8,48 +8,77 @@ const projects = [
     name: "CollegeXConnect",
     cat: "PRODUCT · FULL-STACK · COMMUNITY",
     problem: "Students lacked a unified platform to discover opportunities, build community, and access resources relevant to their academic journey.",
-    built: "A full-stack student platform connecting students with jobs, internships, resources, and communities. Built with authentication, role-based access, real-time feeds, and a content management system.",
-    role: "Product Architect · Full-Stack Engineer · Sole Builder",
-    tech: ["Next.js", "Node.js", "MongoDB", "AWS", "Cloudinary"],
-    outcomes: ["3,000+ registered users", "250K+ platform visitors", "100+ jobs posted"],
+    built: "Full-stack student platform connecting students with jobs, internships, resources, and communities. Authentication, role-based access, real-time feeds, content management, and automated content ingestion.",
+    role: "Founder · Product Architect · Full-Stack Engineer · Sole Builder",
+    tech: ["Next.js", "Node.js", "MongoDB", "AWS", "Firebase", "Cloudinary"],
+    outcomes: ["3,000+ registered users", "250K+ platform visitors", "100+ verified jobs posted", "30+ college partnerships"],
     color: "#c8f542",
-    screens: [
-      { t: "Dashboard", d: "Opportunity feed + community hub" },
-      { t: "Job Board", d: "100+ active opportunities" },
-      { t: "Resources", d: "Curated academic content" },
-      { t: "Community", d: "Student ecosystem" },
-    ],
+    visual: {
+      type: "screens" as const,
+      label: "Student Platform",
+      screens: [
+        { t: "Dashboard", d: "Opportunity feed + community hub" },
+        { t: "Job Board", d: "100+ verified opportunities" },
+        { t: "Resources", d: "55+ academic resources" },
+        { t: "Community", d: "2,000+ member ecosystem" },
+      ],
+    },
   },
   {
     id: "infra",
     num: "02",
     name: "Wake-on-WhatsApp",
     cat: "INFRASTRUCTURE · AUTOMATION · AWS",
-    problem: "A dev environment was consuming infrastructure resources continuously — even when nobody was actively using it.",
-    built: "An on-demand infrastructure workflow triggered entirely by WhatsApp. Wakes the environment on request, proxies traffic while active, and shuts down automatically after idle detection.",
+    problem: "A development environment was consuming infrastructure resources continuously — even when nobody was actively using it.",
+    built: "On-demand infrastructure workflow triggered entirely by WhatsApp. Wakes the environment on request, proxies traffic while active, shuts down automatically after idle detection.",
     role: "Systems Architect · Infrastructure Engineer",
     tech: ["AWS EC2", "WhatsApp API", "Node.js", "Nginx", "Cron"],
-    outcomes: ["~97% reduction in runtime costs", "Zero manual intervention"],
+    outcomes: ["~97% reduction in runtime costs", "Zero manual intervention required"],
     color: "#a8e6cf",
-    diagram: ["WhatsApp Message", "Gatekeeper API", "Health Check", "Wake Environment", "Proxy Requests", "Idle Detection", "Auto-Shutdown"],
+    visual: {
+      type: "diagram" as const,
+      label: "System Architecture",
+      steps: ["WhatsApp Message", "Gatekeeper API", "Health Check", "Wake Environment", "Proxy Requests", "Idle Detection", "Auto-Shutdown"],
+    },
   },
   {
-    id: "meet",
+    id: "voice",
     num: "03",
-    name: "Let's Meet",
-    cat: "AI · REAL-TIME SYSTEMS · AUTOMATION",
-    problem: "Meetings happen constantly but most of their value — decisions, action items, context — disappears the moment the call ends.",
-    built: "A meeting intelligence system that captures conversations in real time, processes transcripts, summarizes discussions, and extracts actionable items through an AI pipeline.",
-    role: "Systems Architect · AI Engineer · Full-Stack Developer",
-    tech: ["Node.js", "OpenAI", "WebSockets", "MongoDB", "Webhooks"],
-    outcomes: ["Real-time transcription", "AI-powered summaries", "Action item extraction", "Workflow automation"],
+    name: "AI Voice Assistant",
+    cat: "DESKTOP · AGENT · AUTOMATION",
+    problem: "Repetitive local tasks and context-switching consumed significant time without a persistent, memory-aware interface to handle them.",
+    built: "Desktop agent with conversational memory, intelligent request routing, and controlled local system automation. Modular agent workflows with gated execution and persistent conversational state.",
+    role: "Systems Architect · Full-Stack Developer",
+    tech: ["React", "Electron.js", "WebSockets", "Gemini API"],
+    outcomes: ["~65% reduction in repetitive interactions", "Persistent conversational memory", "Controlled system automation"],
     color: "#d4a5ff",
-    screens: [
-      { t: "Live Transcription", d: "Real-time speech capture" },
-      { t: "AI Summary", d: "Instant meeting digest" },
-      { t: "Action Items", d: "Extracted automatically" },
-      { t: "Workflow", d: "Automated follow-up" },
-    ],
+    visual: {
+      type: "screens" as const,
+      label: "Desktop Agent",
+      screens: [
+        { t: "Voice Input", d: "Real-time speech capture" },
+        { t: "Memory", d: "Persistent conversation state" },
+        { t: "Routing", d: "Intelligent request handling" },
+        { t: "Automation", d: "Gated system execution" },
+      ],
+    },
+  },
+  {
+    id: "brain",
+    num: "04",
+    name: "CompanyBrain",
+    cat: "ENTERPRISE · KNOWLEDGE · RAG",
+    problem: "Enterprise knowledge was locked in documents and PDFs, making it inaccessible through natural language — requiring manual search and reading.",
+    built: "RAG platform enabling conversational semantic search across enterprise documents. Document parsing, chunking, indexing and vector retrieval pipelines with offline caching strategy.",
+    role: "Systems Architect · Full-Stack Developer",
+    tech: ["React", "Vector Search", "PDF Parsing", "Electron"],
+    outcomes: ["~1.3s retrieval latency", "Semantic search across any document corpus", "Minimised compute cost via caching"],
+    color: "#f5a623",
+    visual: {
+      type: "diagram" as const,
+      label: "RAG Pipeline",
+      steps: ["Document Upload", "PDF Parsing", "Chunking", "Vector Indexing", "Query Input", "Semantic Search", "Answer Generation"],
+    },
   },
 ];
 
@@ -71,10 +100,10 @@ export default function SelectedWork() {
         <div style={{ display: "flex", flexWrap: "wrap", gap: 1, background: "#1f1f1f", marginBottom: "3rem" }}>
           {projects.map((pr, i) => (
             <button key={pr.id} onClick={() => setActive(i)}
-              style={{ flex: 1, minWidth: 120, padding: "1rem 1.5rem", fontSize: "0.72rem", letterSpacing: "0.12em", textTransform: "uppercase", textAlign: "left", border: "none", cursor: "pointer", transition: "all 0.3s",
+              style={{ flex: 1, minWidth: 100, padding: "1rem 1.25rem", fontSize: "0.68rem", letterSpacing: "0.1em", textTransform: "uppercase", textAlign: "left", border: "none", cursor: "pointer", fontFamily: "inherit", transition: "all 0.3s",
                 background: active === i ? "#111111" : "#0c0c0c",
                 color: active === i ? "#f0ede8" : "#4a4a4a" }}>
-              <span style={{ display: "block", fontSize: "0.6rem", color: "#3a3a3a", marginBottom: "0.2rem" }}>{pr.num}</span>
+              <span style={{ display: "block", fontSize: "0.55rem", color: "#3a3a3a", marginBottom: "0.2rem" }}>{pr.num}</span>
               {pr.name}
             </button>
           ))}
@@ -110,15 +139,15 @@ export default function SelectedWork() {
           {/* Right */}
           <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
             {/* Visual */}
-            {"diagram" in p ? (
+            {p.visual.type === "diagram" ? (
               <div style={{ background: "#0a0a0a", border: "1px solid #1f1f1f", padding: "2.5rem" }}>
-                <div className="label" style={{ marginBottom: "2rem" }}>System Architecture</div>
-                <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
-                  {p.diagram?.map((step, i) => (
+                <div className="label" style={{ marginBottom: "2rem" }}>{p.visual.label}</div>
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  {p.visual.steps?.map((step, i) => (
                     <div key={step} style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
                       <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                         <div style={{ width: 8, height: 8, borderRadius: "50%", background: p.color, flexShrink: 0 }} />
-                        {i < (p.diagram?.length ?? 0) - 1 && <div style={{ width: 1, height: 24, background: "#2a2a2a" }} />}
+                        {i < (p.visual.steps?.length ?? 0) - 1 && <div style={{ width: 1, height: 24, background: "#2a2a2a" }} />}
                       </div>
                       <span style={{ fontSize: "0.82rem", padding: "0.25rem 0", color: i % 2 === 0 ? "#f0ede8" : "#6b6b6b" }}>{step}</span>
                     </div>
@@ -127,11 +156,9 @@ export default function SelectedWork() {
               </div>
             ) : (
               <div style={{ background: "#0a0a0a", border: "1px solid #1f1f1f", padding: "2.5rem" }}>
-                <div className="label" style={{ marginBottom: "2rem" }}>
-                  {p.id === "cxc" ? "Student Platform" : "AI Pipeline"}
-                </div>
+                <div className="label" style={{ marginBottom: "2rem" }}>{p.visual.label}</div>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem" }}>
-                  {p.screens?.map((s, i) => (
+                  {p.visual.screens?.map((s, i) => (
                     <div key={s.t} style={{ background: "#111111", border: "1px solid #1f1f1f", padding: "1rem", transition: "border-color 0.3s" }}
                       onMouseEnter={e => (e.currentTarget.style.borderColor = "#2a2a2a")}
                       onMouseLeave={e => (e.currentTarget.style.borderColor = "#1f1f1f")}>
@@ -159,12 +186,6 @@ export default function SelectedWork() {
           </div>
         </div>
       </div>
-
-      <style>{`
-        @media (min-width: 768px) {
-          .sw-grid { grid-template-columns: 5fr 7fr !important; }
-        }
-      `}</style>
     </section>
   );
 }
