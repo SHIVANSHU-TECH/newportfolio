@@ -1,142 +1,95 @@
 "use client";
-
 import { useEffect, useRef, useState } from "react";
 
-const statusItems = ["AI Systems", "Products", "Automations"];
+const statuses = ["AI Systems", "Products", "Automations"];
 
 export default function Hero() {
-  const [statusIdx, setStatusIdx] = useState(0);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const heroRef = useRef<HTMLElement>(null);
+  const [sIdx, setSIdx] = useState(0);
+  const [mouse, setMouse] = useState({ x: -9999, y: -9999 });
 
-  // Cycle through status items
   useEffect(() => {
-    const interval = setInterval(() => {
-      setStatusIdx((i) => (i + 1) % statusItems.length);
-    }, 2200);
-    return () => clearInterval(interval);
+    const t = setInterval(() => setSIdx(i => (i + 1) % statuses.length), 2400);
+    return () => clearInterval(t);
   }, []);
 
-  // Subtle cursor parallax
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
-    };
-    window.addEventListener("mousemove", handleMouseMove, { passive: true });
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+    const fn = (e: MouseEvent) => setMouse({ x: e.clientX, y: e.clientY });
+    window.addEventListener("mousemove", fn, { passive: true });
+    return () => window.removeEventListener("mousemove", fn);
   }, []);
 
   return (
-    <section
-      ref={heroRef}
-      className="relative min-h-screen flex flex-col justify-center overflow-hidden"
-    >
+    <section style={{ position: "relative", minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "center", overflow: "hidden", background: "#0c0c0c" }}>
+
       {/* Cursor glow */}
-      <div
-        className="pointer-events-none fixed inset-0 z-0"
-        style={{
-          background: `radial-gradient(600px circle at ${mousePos.x}px ${mousePos.y}px, rgba(200,245,66,0.04), transparent 50%)`,
-        }}
-      />
+      <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0, background: `radial-gradient(600px circle at ${mouse.x}px ${mouse.y}px, rgba(200,245,66,0.04), transparent 50%)` }} />
 
-      {/* Grid lines */}
-      <div className="absolute inset-0 z-0 opacity-[0.03]">
-        <div
-          className="w-full h-full"
-          style={{
-            backgroundImage:
-              "linear-gradient(to right, #f0ede8 1px, transparent 1px), linear-gradient(to bottom, #f0ede8 1px, transparent 1px)",
-            backgroundSize: "80px 80px",
-          }}
-        />
-      </div>
+      {/* Grid */}
+      <div style={{ position: "absolute", inset: 0, zIndex: 0, opacity: 0.03, backgroundImage: "linear-gradient(to right,#f0ede8 1px,transparent 1px),linear-gradient(to bottom,#f0ede8 1px,transparent 1px)", backgroundSize: "80px 80px" }} />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 pt-32 pb-20">
+      <div className="container" style={{ position: "relative", zIndex: 1, paddingTop: "8rem", paddingBottom: "5rem", paddingLeft: "1.5rem", paddingRight: "1.5rem" }}>
         {/* Eyebrow */}
-        <div className="flex items-center gap-3 mb-12">
-          <span className="text-[10px] font-medium tracking-[0.25em] uppercase text-[#6b6b6b]">
-            INDEPENDENT PRODUCT ENGINEER
-          </span>
-          <span className="w-8 h-px bg-[#2a2a2a]" />
-          <span className="text-[10px] font-medium tracking-[0.25em] uppercase text-[#6b6b6b]">
-            BASED IN INDIA · WORKING GLOBALLY
-          </span>
+        <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "3rem", flexWrap: "wrap" }}>
+          <span className="label">INDEPENDENT PRODUCT ENGINEER</span>
+          <span style={{ width: 24, height: 1, background: "#2a2a2a", flexShrink: 0 }} />
+          <span className="label">BASED IN INDIA · WORKING GLOBALLY</span>
         </div>
 
-        {/* Main headline */}
-        <h1 className="text-[clamp(2.8rem,7vw,7rem)] font-light leading-[1.02] tracking-[-0.03em] text-[#f0ede8] max-w-5xl mb-8">
-          I don&apos;t build
-          <br />
-          for everyone.
-          <br />
-          <span className="text-[#6b6b6b]">I build what others</span>
-          <br />
-          haven&apos;t figured
-          <br />
+        {/* Headline */}
+        <h1 style={{ fontSize: "clamp(2.6rem,6.5vw,6.5rem)", fontWeight: 300, lineHeight: 1.04, letterSpacing: "-0.03em", color: "#f0ede8", maxWidth: 900, marginBottom: "2rem" }}>
+          I don&apos;t build<br />
+          for everyone.<br />
+          <span style={{ color: "#6b6b6b" }}>I build what others</span><br />
+          haven&apos;t figured<br />
           out yet.
         </h1>
 
-        {/* Supporting paragraph */}
-        <p className="text-[clamp(1rem,1.5vw,1.2rem)] text-[#6b6b6b] max-w-xl leading-relaxed mb-12 font-light">
-          I turn ambitious ideas, difficult technical problems, and repetitive
-          business processes into production-ready products, AI systems, and
-          automations.
+        {/* Subline */}
+        <p style={{ fontSize: "clamp(0.95rem,1.4vw,1.15rem)", color: "#6b6b6b", maxWidth: 500, lineHeight: 1.7, marginBottom: "3rem", fontWeight: 300 }}>
+          I turn ambitious ideas, difficult technical problems, and repetitive business processes into production-ready products, AI systems, and automations.
         </p>
 
         {/* CTAs */}
-        <div className="flex flex-col sm:flex-row items-start gap-4 mb-20">
-          <a
-            href="#work"
-            className="group inline-flex items-center gap-3 bg-[#c8f542] text-[#0c0c0c] px-8 py-4 text-sm font-medium tracking-wide hover:bg-[#d4f85a] transition-all duration-300"
-          >
-            See what I&apos;ve built
-            <span className="transition-transform duration-300 group-hover:translate-x-1">
-              →
-            </span>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem", marginBottom: "5rem", alignItems: "center" }}>
+          <a href="#work"
+            style={{ display: "inline-flex", alignItems: "center", gap: "0.6rem", background: "#c8f542", color: "#0c0c0c", padding: "1rem 2rem", fontSize: "0.82rem", fontWeight: 500, letterSpacing: "0.04em", textDecoration: "none", transition: "background 0.3s" }}
+            onMouseEnter={e => (e.currentTarget.style.background = "#d4f85a")}
+            onMouseLeave={e => (e.currentTarget.style.background = "#c8f542")}>
+            See what I&apos;ve built <span>→</span>
           </a>
-          <a
-            href="#contact"
-            className="inline-flex items-center gap-3 border border-[#2a2a2a] text-[#f0ede8] px-8 py-4 text-sm font-medium tracking-wide hover:border-[#c8f542] hover:text-[#c8f542] transition-all duration-300"
-          >
+          <a href="#contact"
+            style={{ display: "inline-flex", alignItems: "center", gap: "0.6rem", border: "1px solid #2a2a2a", color: "#f0ede8", padding: "1rem 2rem", fontSize: "0.82rem", fontWeight: 500, letterSpacing: "0.04em", textDecoration: "none", transition: "all 0.3s" }}
+            onMouseEnter={e => { e.currentTarget.style.borderColor = "#c8f542"; e.currentTarget.style.color = "#c8f542"; }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor = "#2a2a2a"; e.currentTarget.style.color = "#f0ede8"; }}>
             Have something challenging? →
           </a>
         </div>
 
-        {/* Credibility bar */}
-        <div className="flex items-center gap-4 flex-wrap">
-          {["Full-Stack", "AI Systems", "Automation", "Product Engineering"].map(
-            (item, i) => (
-              <span key={item} className="flex items-center gap-4">
-                <span className="text-xs text-[#4a4a4a] tracking-widest uppercase">
-                  {item}
-                </span>
-                {i < 3 && <span className="w-1 h-1 rounded-full bg-[#2a2a2a]" />}
-              </span>
-            )
-          )}
+        {/* Credibility row */}
+        <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "1rem" }}>
+          {["Full-Stack", "AI Systems", "Automation", "Product Engineering"].map((t, i) => (
+            <span key={t} style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+              <span style={{ fontSize: "0.7rem", color: "#4a4a4a", letterSpacing: "0.18em", textTransform: "uppercase" }}>{t}</span>
+              {i < 3 && <span style={{ width: 4, height: 4, borderRadius: "50%", background: "#2a2a2a", flexShrink: 0 }} />}
+            </span>
+          ))}
         </div>
       </div>
 
-      {/* Status indicator — bottom left */}
-      <div className="absolute bottom-10 left-6 md:left-12 z-10 flex items-center gap-3">
-        <span className="relative flex h-2 w-2">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#c8f542] opacity-75" />
-          <span className="relative inline-flex rounded-full h-2 w-2 bg-[#c8f542]" />
+      {/* Status dot — bottom left */}
+      <div style={{ position: "absolute", bottom: 40, left: "1.5rem", zIndex: 1, display: "flex", alignItems: "center", gap: "0.6rem" }}>
+        <span style={{ position: "relative", display: "inline-flex", width: 8, height: 8 }}>
+          <span className="ping" style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "#c8f542", opacity: 0.75 }} />
+          <span style={{ position: "relative", width: 8, height: 8, borderRadius: "50%", background: "#c8f542" }} />
         </span>
-        <span className="text-[11px] tracking-widest uppercase text-[#4a4a4a]">
-          CURRENTLY BUILDING
-        </span>
-        <span className="text-[11px] tracking-widest uppercase text-[#c8f542] min-w-[100px] transition-all duration-500">
-          {statusItems[statusIdx]}
-        </span>
+        <span style={{ fontSize: "0.65rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "#4a4a4a" }}>CURRENTLY BUILDING</span>
+        <span style={{ fontSize: "0.65rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "#c8f542", minWidth: 90 }}>{statuses[sIdx]}</span>
       </div>
 
-      {/* Scroll indicator */}
-      <div className="absolute bottom-10 right-6 md:right-12 z-10 flex flex-col items-center gap-2">
-        <span className="text-[10px] tracking-widest uppercase text-[#4a4a4a] rotate-90 origin-center">
-          scroll
-        </span>
-        <div className="w-px h-12 bg-gradient-to-b from-[#2a2a2a] to-transparent" />
+      {/* Scroll indicator — bottom right */}
+      <div style={{ position: "absolute", bottom: 40, right: "1.5rem", zIndex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: "0.4rem" }}>
+        <span style={{ fontSize: "0.6rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "#3a3a3a", writingMode: "vertical-rl" }}>scroll</span>
+        <div style={{ width: 1, height: 40, background: "linear-gradient(to bottom,#2a2a2a,transparent)" }} />
       </div>
     </section>
   );

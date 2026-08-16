@@ -1,62 +1,38 @@
 "use client";
 
-const techGroups = [
-  {
-    label: "PRODUCT",
-    items: ["Next.js", "React", "TypeScript", "Tailwind", "Node.js"],
-  },
-  {
-    label: "DATA",
-    items: ["MongoDB", "PostgreSQL", "Firebase"],
-  },
-  {
-    label: "AI",
-    items: ["LLM APIs", "RAG Systems", "AI Agents", "AI Automation"],
-  },
-  {
-    label: "INFRASTRUCTURE",
-    items: ["AWS", "Vercel", "Render", "Cloudinary"],
-  },
-  {
-    label: "SYSTEMS",
-    items: ["REST APIs", "Authentication", "Webhooks", "Real-time systems"],
-  },
+const groups = [
+  { label: "PRODUCT", items: ["Next.js", "React", "TypeScript", "Tailwind", "Node.js"] },
+  { label: "DATA", items: ["MongoDB", "PostgreSQL", "Firebase"] },
+  { label: "AI", items: ["LLM APIs", "RAG Systems", "AI Agents", "AI Automation"] },
+  { label: "INFRASTRUCTURE", items: ["AWS", "Vercel", "Render", "Cloudinary"] },
+  { label: "SYSTEMS", items: ["REST APIs", "Authentication", "Webhooks", "Real-time systems"] },
 ];
 
 export default function Technology() {
   return (
-    <section className="py-24 md:py-32 border-t border-[#1f1f1f]">
-      <div className="max-w-7xl mx-auto px-6 md:px-12">
-        <div className="grid md:grid-cols-12 gap-8 md:gap-16 items-start">
+    <section className="section">
+      <div className="container" style={{ paddingLeft: "1.5rem", paddingRight: "1.5rem" }}>
+        <div className="tech-layout" style={{ display: "grid", gridTemplateColumns: "1fr", gap: "3rem" }}>
           {/* Left */}
-          <div className="md:col-span-4">
-            <span className="text-[10px] font-medium tracking-[0.25em] uppercase text-[#6b6b6b] block mb-6">
-              Stack
-            </span>
-            <p className="text-2xl md:text-3xl font-light tracking-[-0.02em] text-[#f0ede8] leading-snug mb-4">
-              The tools change.
-              <br />
-              <span className="text-[#6b6b6b]">The engineering doesn&apos;t.</span>
+          <div>
+            <span className="label" style={{ display: "block", marginBottom: "1.5rem" }}>Stack</span>
+            <p style={{ fontSize: "clamp(1.4rem,2.5vw,2.2rem)", fontWeight: 300, letterSpacing: "-0.02em", color: "#f0ede8", lineHeight: 1.3, marginBottom: "1rem" }}>
+              The tools change.<br /><span style={{ color: "#6b6b6b" }}>The engineering doesn&apos;t.</span>
             </p>
-            <p className="text-sm text-[#4a4a4a] leading-relaxed mt-4">
-              Tools are chosen for the problem, not the other way around.
-              What matters is the system design behind them.
-            </p>
+            <p style={{ fontSize: "0.82rem", color: "#4a4a4a", lineHeight: 1.75 }}>Tools are chosen for the problem, not the other way around. What matters is the system design behind them.</p>
           </div>
 
-          {/* Right — groups */}
-          <div className="md:col-span-8 space-y-8">
-            {techGroups.map((group) => (
-              <div key={group.label} className="flex gap-6 md:gap-10 items-start">
-                <span className="text-[9px] font-medium tracking-[0.2em] uppercase text-[#2a2a2a] w-20 flex-shrink-0 pt-0.5">
-                  {group.label}
-                </span>
-                <div className="flex flex-wrap gap-2">
-                  {group.items.map((item) => (
-                    <span
-                      key={item}
-                      className="text-xs text-[#6b6b6b] border border-[#1a1a1a] px-3 py-1.5 hover:border-[#2a2a2a] hover:text-[#8a8a8a] transition-all duration-300"
-                    >
+          {/* Right */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
+            {groups.map(g => (
+              <div key={g.label} style={{ display: "flex", gap: "2.5rem", alignItems: "flex-start" }}>
+                <span className="label" style={{ width: 80, flexShrink: 0, paddingTop: "0.15rem", color: "#2a2a2a" }}>{g.label}</span>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
+                  {g.items.map(item => (
+                    <span key={item}
+                      style={{ fontSize: "0.72rem", color: "#6b6b6b", border: "1px solid #1a1a1a", padding: "0.35rem 0.75rem", transition: "all 0.3s", cursor: "default" }}
+                      onMouseEnter={e => { e.currentTarget.style.borderColor = "#2a2a2a"; e.currentTarget.style.color = "#8a8a8a"; }}
+                      onMouseLeave={e => { e.currentTarget.style.borderColor = "#1a1a1a"; e.currentTarget.style.color = "#6b6b6b"; }}>
                       {item}
                     </span>
                   ))}
@@ -66,6 +42,12 @@ export default function Technology() {
           </div>
         </div>
       </div>
+
+      <style>{`
+        @media (min-width: 768px) {
+          .tech-grid { grid-template-columns: 300px 1fr !important; }
+        }
+      `}</style>
     </section>
   );
 }

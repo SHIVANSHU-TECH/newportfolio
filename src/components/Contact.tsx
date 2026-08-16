@@ -2,67 +2,46 @@
 
 export default function Contact() {
   return (
-    <section id="contact" className="py-24 md:py-40 border-t border-[#1f1f1f]">
-      <div className="max-w-7xl mx-auto px-6 md:px-12">
-        <div className="grid md:grid-cols-12 gap-8 md:gap-16 items-start">
-          {/* Left */}
-          <div className="md:col-span-4">
-            <span className="text-[10px] font-medium tracking-[0.25em] uppercase text-[#6b6b6b]">
-              Contact
-            </span>
-          </div>
+    <section id="contact" className="section">
+      <div className="container" style={{ paddingLeft: "1.5rem", paddingRight: "1.5rem" }}>
+        <div className="contact-layout" style={{ display: "grid", gridTemplateColumns: "1fr", gap: "3rem" }}>
+          <span className="label">Contact</span>
 
-          {/* Right */}
-          <div className="md:col-span-8">
-            <h2 className="text-[clamp(2rem,4vw,3.5rem)] font-light tracking-[-0.03em] text-[#f0ede8] leading-tight mb-6">
-              Have something
-              <br />
-              difficult in mind?
+          <div>
+            <h2 style={{ fontSize: "clamp(2rem,4vw,3.5rem)", fontWeight: 300, letterSpacing: "-0.03em", color: "#f0ede8", lineHeight: 1.08, marginBottom: "1.5rem" }}>
+              Have something<br />difficult in mind?
             </h2>
-            <p className="text-base md:text-lg text-[#6b6b6b] leading-relaxed font-light mb-12 max-w-lg">
-              Tell me what you&apos;re trying to build, fix, or automate. If
-              it&apos;s an interesting problem, we should talk.
+            <p style={{ fontSize: "clamp(0.9rem,1.2vw,1.05rem)", color: "#6b6b6b", lineHeight: 1.8, fontWeight: 300, maxWidth: 460, marginBottom: "3rem" }}>
+              Tell me what you&apos;re trying to build, fix, or automate. If it&apos;s an interesting problem, we should talk.
             </p>
 
-            {/* Primary contact */}
-            <div className="mb-12">
-              <a
-                href="mailto:shivanshu@gmail.com"
-                className="group inline-flex items-center gap-4"
-              >
-                <span className="text-[clamp(1.1rem,2vw,1.4rem)] text-[#f0ede8] font-light tracking-tight group-hover:text-[#c8f542] transition-colors duration-300">
-                  shivanshu@gmail.com
-                </span>
-                <span className="text-[#4a4a4a] group-hover:text-[#c8f542] transition-colors duration-300 group-hover:translate-x-1 transition-transform">
-                  →
-                </span>
+            {/* Email */}
+            <div style={{ marginBottom: "3rem" }}>
+              <a href="mailto:shivanshu@gmail.com"
+                style={{ display: "inline-flex", alignItems: "center", gap: "0.75rem", fontSize: "clamp(1rem,1.8vw,1.3rem)", color: "#f0ede8", textDecoration: "none", fontWeight: 300, letterSpacing: "-0.01em", transition: "color 0.3s" }}
+                onMouseEnter={e => (e.currentTarget.style.color = "#c8f542")}
+                onMouseLeave={e => (e.currentTarget.style.color = "#f0ede8")}>
+                shivanshu@gmail.com <span style={{ color: "#4a4a4a" }}>→</span>
               </a>
             </div>
 
-            {/* Secondary links */}
-            <div className="flex flex-wrap gap-6 border-t border-[#1f1f1f] pt-8">
-              <a
-                href="https://linkedin.com/in/shivanshu-shukla"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs text-[#4a4a4a] hover:text-[#f0ede8] transition-colors duration-300 tracking-wide"
-              >
-                LinkedIn ↗
-              </a>
-              <a
-                href="https://github.com/shivanshu-shukla"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs text-[#4a4a4a] hover:text-[#f0ede8] transition-colors duration-300 tracking-wide"
-              >
-                GitHub ↗
-              </a>
+            {/* Links */}
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "1.5rem", borderTop: "1px solid #1f1f1f", paddingTop: "2rem", marginBottom: "2rem" }}>
+              {[
+                { label: "LinkedIn ↗", href: "https://linkedin.com/in/shivanshu-shukla" },
+                { label: "GitHub ↗", href: "https://github.com/shivanshu-shukla" },
+              ].map(l => (
+                <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer"
+                  style={{ fontSize: "0.75rem", color: "#4a4a4a", textDecoration: "none", letterSpacing: "0.06em", transition: "color 0.3s" }}
+                  onMouseEnter={e => (e.currentTarget.style.color = "#f0ede8")}
+                  onMouseLeave={e => (e.currentTarget.style.color = "#4a4a4a")}>
+                  {l.label}
+                </a>
+              ))}
             </div>
 
-            {/* Clarifying note */}
-            <p className="text-xs text-[#2a2a2a] mt-8 max-w-sm leading-relaxed">
-              A brief description of the problem is enough to start. No need for
-              a full specification — that&apos;s what the first conversation is for.
+            <p style={{ fontSize: "0.7rem", color: "#2a2a2a", maxWidth: 320, lineHeight: 1.75 }}>
+              A brief description of the problem is enough to start. No need for a full specification — that&apos;s what the first conversation is for.
             </p>
           </div>
         </div>

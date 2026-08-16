@@ -2,88 +2,51 @@
 
 export default function About() {
   return (
-    <section id="about" className="py-24 md:py-40 border-t border-[#1f1f1f]">
-      <div className="max-w-7xl mx-auto px-6 md:px-12">
-        <div className="grid md:grid-cols-12 gap-8 md:gap-16 items-start">
+    <section id="about" className="section">
+      <div className="container" style={{ paddingLeft: "1.5rem", paddingRight: "1.5rem" }}>
+        <div className="about-layout" style={{ display: "grid", gridTemplateColumns: "1fr", gap: "3rem" }}>
           {/* Left */}
-          <div className="md:col-span-4">
-            <span className="text-[10px] font-medium tracking-[0.25em] uppercase text-[#6b6b6b] block mb-8">
-              About
-            </span>
-
-            {/* Identity block */}
-            <div className="space-y-1 mb-10">
-              <p className="text-base font-medium text-[#f0ede8]">
-                Shivanshu Shukla
-              </p>
-              <p className="text-sm text-[#6b6b6b]">
-                Independent Product Engineer
-              </p>
-              <p className="text-xs text-[#3a3a3a] mt-3">
-                Based in India · Working globally
-              </p>
+          <div>
+            <span className="label" style={{ display: "block", marginBottom: "2rem" }}>About</span>
+            <div style={{ marginBottom: "2.5rem" }}>
+              <p style={{ fontSize: "1rem", fontWeight: 500, color: "#f0ede8", marginBottom: "0.25rem" }}>Shivanshu Shukla</p>
+              <p style={{ fontSize: "0.85rem", color: "#6b6b6b" }}>Independent Product Engineer</p>
+              <p style={{ fontSize: "0.72rem", color: "#3a3a3a", marginTop: "0.75rem" }}>Based in India · Working globally</p>
             </div>
-
-            {/* Proof */}
-            <div className="space-y-4 pt-8 border-t border-[#1f1f1f]">
-              {[
-                "Products conceived and shipped end-to-end",
-                "AI systems deployed in production",
-                "Infrastructure costs reduced significantly",
-                "Automation workflows built and maintained",
-              ].map((item) => (
-                <div key={item} className="flex items-start gap-3">
-                  <span className="w-1 h-1 rounded-full bg-[#c8f542] mt-2 flex-shrink-0" />
-                  <span className="text-xs text-[#4a4a4a] leading-relaxed">
-                    {item}
-                  </span>
+            <div style={{ borderTop: "1px solid #1f1f1f", paddingTop: "2rem", display: "flex", flexDirection: "column", gap: "1rem" }}>
+              {["Products conceived and shipped end-to-end", "AI systems deployed in production", "Infrastructure costs reduced significantly", "Automation workflows built and maintained"].map(item => (
+                <div key={item} style={{ display: "flex", alignItems: "flex-start", gap: "0.75rem" }}>
+                  <span style={{ width: 4, height: 4, borderRadius: "50%", background: "#c8f542", marginTop: "0.45rem", flexShrink: 0 }} />
+                  <span style={{ fontSize: "0.75rem", color: "#4a4a4a", lineHeight: 1.6 }}>{item}</span>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Right — bio */}
-          <div className="md:col-span-8">
-            <p className="text-[clamp(1.8rem,3vw,2.5rem)] font-light tracking-[-0.02em] text-[#f0ede8] mb-8 leading-snug">
-              I like difficult problems.
-            </p>
-
-            <div className="space-y-5 max-w-2xl">
-              <p className="text-base md:text-lg text-[#6b6b6b] leading-relaxed font-light">
-                I&apos;m a Product Engineer who works at the intersection of
-                software, AI, and business problems.
-              </p>
-              <p className="text-base md:text-lg text-[#6b6b6b] leading-relaxed font-light">
-                I care less about writing more code and more about building the
-                right system — whether that&apos;s a product from scratch, an AI
-                workflow, an internal platform, or an automation that eliminates
-                hours of repetitive work.
-              </p>
-              <p className="text-base md:text-lg text-[#6b6b6b] leading-relaxed font-light">
-                The best work happens when the problem is interesting and
-                there&apos;s room to build something properly. I&apos;m not
-                particularly interested in checkbox work.
-              </p>
+          {/* Right */}
+          <div>
+            <p style={{ fontSize: "clamp(1.6rem,3vw,2.4rem)", fontWeight: 300, letterSpacing: "-0.02em", color: "#f0ede8", marginBottom: "2rem", lineHeight: 1.2 }}>I like difficult problems.</p>
+            <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem", maxWidth: 580 }}>
+              {[
+                "I'm a Product Engineer who works at the intersection of software, AI, and business problems.",
+                "I care less about writing more code and more about building the right system — whether that's a product from scratch, an AI workflow, an internal platform, or an automation that eliminates hours of repetitive work.",
+                "The best work happens when the problem is interesting and there's room to build something properly. I'm not particularly interested in checkbox work.",
+              ].map((t, i) => (
+                <p key={i} style={{ fontSize: "clamp(0.9rem,1.2vw,1.05rem)", color: "#6b6b6b", lineHeight: 1.8, fontWeight: 300 }}>{t}</p>
+              ))}
             </div>
-
-            {/* Links */}
-            <div className="flex gap-6 mt-12">
-              <a
-                href="https://github.com/shivanshu-shukla"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs text-[#4a4a4a] hover:text-[#f0ede8] transition-colors duration-300 tracking-wide hover-underline"
-              >
-                GitHub →
-              </a>
-              <a
-                href="https://linkedin.com/in/shivanshu-shukla"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs text-[#4a4a4a] hover:text-[#f0ede8] transition-colors duration-300 tracking-wide hover-underline"
-              >
-                LinkedIn →
-              </a>
+            <div style={{ display: "flex", gap: "1.5rem", marginTop: "3rem" }}>
+              {[
+                { label: "GitHub →", href: "https://github.com/shivanshu-shukla" },
+                { label: "LinkedIn →", href: "https://linkedin.com/in/shivanshu-shukla" },
+              ].map(l => (
+                <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer" className="hu"
+                  style={{ fontSize: "0.75rem", color: "#4a4a4a", textDecoration: "none", letterSpacing: "0.06em", transition: "color 0.3s" }}
+                  onMouseEnter={e => (e.currentTarget.style.color = "#f0ede8")}
+                  onMouseLeave={e => (e.currentTarget.style.color = "#4a4a4a")}>
+                  {l.label}
+                </a>
+              ))}
             </div>
           </div>
         </div>

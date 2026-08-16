@@ -3,11 +3,23 @@
 export default function LiveProjectButton() {
   return (
     <button
-      className="rounded-full border-2 border-[#D7E2EA] text-[#D7E2EA] font-medium uppercase tracking-widest
-        px-8 py-3 sm:px-10 sm:py-3.5
-        text-sm sm:text-base
-        hover:bg-[#D7E2EA]/10 transition-colors duration-200 cursor-pointer"
-      style={{ fontFamily: "'Kanit', sans-serif" }}
+      style={{
+        borderRadius: "9999px",
+        border: "2px solid #D7E2EA",
+        color: "#D7E2EA",
+        fontWeight: 500,
+        textTransform: "uppercase",
+        letterSpacing: "0.12em",
+        padding: "0.5rem 1.25rem",
+        fontSize: "0.68rem",
+        background: "transparent",
+        cursor: "pointer",
+        fontFamily: "'Kanit', sans-serif",
+        transition: "background 0.2s",
+        whiteSpace: "nowrap",
+      }}
+      onMouseEnter={e => (e.currentTarget.style.background = "rgba(215,226,234,0.1)")}
+      onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
     >
       Live Project
     </button>
