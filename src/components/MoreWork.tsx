@@ -1,10 +1,30 @@
 "use client";
 
 const items = [
-  { name: "ClientScout AI", cat: "AI · AUTOMATION", desc: "AI-driven lead generation tool that scrapes, scores, and surfaces qualified business leads from multiple sources automatically.", tags: ["Python", "AI", "Automation", "Scraping"] },
-  { name: "Job Magica / Noah", cat: "AI · PRODUCT", desc: "Intelligent job matching system that analyzes candidate profiles and surfaces relevant opportunities — reducing friction between finding work and getting hired.", tags: ["Node.js", "AI", "MongoDB"] },
-  { name: "CruxRAG", cat: "AI · KNOWLEDGE SYSTEMS", desc: "Company knowledge brain using Retrieval-Augmented Generation. Indexes internal documents and surfaces answers from your own data instead of generic AI responses.", tags: ["RAG", "LLM APIs", "Vector DB", "Next.js"] },
-  { name: "Multi-Query Scraper", cat: "TOOLS · AUTOMATION", desc: "Batch lead scraping system that runs multiple queries in parallel against Google Maps and business directories, producing structured CSV output.", tags: ["Python", "Automation", "Data"] },
+  {
+    name: "AI Voice Assistant",
+    cat: "DESKTOP · AGENT · AUTOMATION",
+    desc: "Desktop AI assistant with conversational memory, request routing, and controlled local system automation. Modular agent workflows with gated execution and persistent state — reduced repetitive interactions by ~65%.",
+    tags: ["React", "Electron.js", "WebSockets", "Gemini API"],
+  },
+  {
+    name: "CompanyBrain",
+    cat: "ENTERPRISE · KNOWLEDGE · RAG",
+    desc: "RAG platform for conversational semantic search across enterprise documents. Document parsing, chunking, indexing and vector retrieval pipelines. Offline vector caching reduced retrieval latency to ~1.3s.",
+    tags: ["Vector Search", "PDF Parsing", "React", "Electron"],
+  },
+  {
+    name: "ApplyAI",
+    cat: "RECRUITMENT · PLATFORM · AUTOMATION",
+    desc: "AI-powered recruitment assistant for automated resume parsing, semantic candidate ranking, and job-role similarity analysis. Gemini API for semantic evaluation workflows.",
+    tags: ["Next.js", "Gemini API", "Resume Parser", "Shadcn UI", "RBAC"],
+  },
+  {
+    name: "Multi-Query Scraper",
+    cat: "TOOLS · AUTOMATION · DATA",
+    desc: "Batch lead scraping system that runs multiple queries in parallel against Google Maps and business directories, producing structured CSV output.",
+    tags: ["Python", "Automation", "Data"],
+  },
 ];
 
 export default function MoreWork() {

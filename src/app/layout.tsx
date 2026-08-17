@@ -33,7 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={inter.variable} style={{ scrollBehavior: "smooth" }}>
       <head />
-      <body style={{ background: "#0c0c0c", color: "#f0ede8", overflowX: "hidden" }}>
+      <body style={{ background: "#0a0a0a", color: "#e5e7eb", overflowX: "hidden" }}>
         {children}
       </body>
     </html>

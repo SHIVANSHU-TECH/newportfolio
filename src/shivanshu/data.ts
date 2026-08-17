@@ -3,9 +3,9 @@ export const profile = {
   tagline: "Independent Product Engineer",
   sub: "Full-Stack · AI Systems · Automation · Product Development",
   location: "New Delhi, India · Working globally",
-  email: "shivanshushukla2022@gmail.com",
+  email: "shivanshu2022@gmail.com",
   github: "https://github.com/shivanshu-tech",
-  linkedin: "https://www.linkedin.com/in/shivanshushukla07/",
+  linkedin: "https://www.linkedin.com/in/shivanshu-shukla-3626322b5/",
   website: "shivanshushukla.vercel.app",
   headline: "I don't build for everyone.\nI build what others haven't\nfigured out yet.",
   bio: [

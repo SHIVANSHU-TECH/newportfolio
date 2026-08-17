@@ -37,8 +37,8 @@ export default function About() {
             </div>
             <div style={{ display: "flex", gap: "1.5rem", marginTop: "3rem" }}>
               {[
-                { label: "GitHub →", href: "https://github.com/shivanshu-shukla" },
-                { label: "LinkedIn →", href: "https://linkedin.com/in/shivanshu-shukla" },
+                { label: "GitHub →", href: "https://github.com/shivanshu-tech" },
+                { label: "LinkedIn →", href: "https://www.linkedin.com/in/shivanshushukla07/" },
               ].map(l => (
                 <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer" className="hu"
                   style={{ fontSize: "0.75rem", color: "#4a4a4a", textDecoration: "none", letterSpacing: "0.06em", transition: "color 0.3s" }}

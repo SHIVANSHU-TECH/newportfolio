@@ -9,7 +9,7 @@ export default function Footer() {
           <div>
             <p style={{ fontSize: "0.7rem", fontWeight: 500, letterSpacing: "0.18em", textTransform: "uppercase", color: "#f0ede8", marginBottom: "0.25rem" }}>SHIVANSHU SHUKLA</p>
             <p style={{ fontSize: "0.62rem", color: "#3a3a3a", letterSpacing: "0.06em" }}>Independent Product Engineer</p>
-            <p style={{ fontSize: "0.62rem", color: "#2a2a2a", letterSpacing: "0.06em" }}>Full-Stack · Automation · Product · Infrastructure</p>
+            <p style={{ fontSize: "0.62rem", color: "#2a2a2a", letterSpacing: "0.06em" }}>Full-Stack · AI · Automation · Product</p>
           </div>
           {/* Right */}
           <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "0.5rem" }}>

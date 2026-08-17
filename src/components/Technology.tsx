@@ -1,11 +1,12 @@
 "use client";
 
 const groups = [
-  { label: "PRODUCT", items: ["Next.js", "React", "TypeScript", "Tailwind", "Node.js"] },
-  { label: "DATA", items: ["MongoDB", "PostgreSQL", "Firebase"] },
-  { label: "AI", items: ["LLM APIs", "RAG Systems", "AI Agents", "AI Automation"] },
-  { label: "INFRASTRUCTURE", items: ["AWS", "Vercel", "Render", "Cloudinary"] },
-  { label: "SYSTEMS", items: ["REST APIs", "Authentication", "Webhooks", "Real-time systems"] },
+  { label: "LANGUAGES", items: ["JavaScript", "TypeScript", "C++", "Java"] },
+  { label: "FRONTEND", items: ["Next.js", "React", "Electron.js", "Tailwind CSS", "Framer Motion", "Shadcn UI"] },
+  { label: "BACKEND", items: ["Node.js", "Express.js", "FastAPI", "REST APIs", "WebSockets", "Webhooks", "JWT", "RBAC"] },
+  { label: "AI & LLM", items: ["Gemini API", "OpenAI API", "Vector Search", "RAG", "Prompt Engineering", "Semantic Search"] },
+  { label: "DATA", items: ["MongoDB", "PostgreSQL", "Firebase", "Supabase"] },
+  { label: "CLOUD & DEVOPS", items: ["AWS", "Vercel", "Docker", "GitHub Actions", "CI/CD", "Cloudinary"] },
 ];
 
 export default function Technology() {
