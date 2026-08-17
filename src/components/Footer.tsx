@@ -17,7 +17,7 @@ export default function Footer() {
             <div style={{ display: "flex", gap: "1rem" }}>
               {[
                 { label: "GitHub", href: "https://github.com/shivanshu-tech" },
-                { label: "LinkedIn", href: "https://www.linkedin.com/in/shivanshushukla07/" },
+                { label: "LinkedIn", href: "https://www.linkedin.com/in/shivanshu-shukla-3626322b5/" },
               ].map(l => (
                 <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer"
                   style={{ fontSize: "0.62rem", color: "#2a2a2a", textDecoration: "none", letterSpacing: "0.06em", transition: "color 0.3s" }}

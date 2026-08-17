@@ -28,7 +28,7 @@ export default function Contact() {
             {/* Links */}
             <div style={{ display: "flex", flexWrap: "wrap", gap: "1.5rem", borderTop: "1px solid #1f1f1f", paddingTop: "2rem", marginBottom: "2rem" }}>
               {[
-                { label: "LinkedIn ↗", href: "https://www.linkedin.com/in/shivanshushukla07/" },
+                { label: "LinkedIn ↗", href: "https://www.linkedin.com/in/shivanshu-shukla-3626322b5/" },
                 { label: "GitHub ↗", href: "https://github.com/shivanshu-tech" },
               ].map(l => (
                 <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer"

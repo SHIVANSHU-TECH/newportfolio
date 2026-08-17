@@ -2,7 +2,7 @@
 
 export default function ContactButton() {
   const handleContact = () => {
-    window.open("mailto:shivanshu2022@gmail.com", "_blank");
+    window.open("mailto:shivanshushukla2022@gmail.com", "_blank");
   };
 
   return (
