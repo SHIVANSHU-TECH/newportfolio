@@ -1,5 +1,5 @@
-import ShivanshuApp from "@/shivanshu/ShivanshuApp";
+import CreatorApp from "@/creator/CreatorApp";
 
 export default function Home() {
-  return <ShivanshuApp />;
+  return <CreatorApp />;
 }
