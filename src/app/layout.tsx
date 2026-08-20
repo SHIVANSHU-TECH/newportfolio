@@ -16,10 +16,7 @@ export const metadata: Metadata = {
   keywords: ["Product Engineer", "Full-Stack Engineer", "AI Builder", "Automation", "Shivanshu Shukla"],
   authors: [{ name: "Shivanshu Shukla" }],
   icons: {
-    icon: [
-      { url: "/icon.svg", type: "image/svg+xml" },
-    ],
-    shortcut: "/icon.svg",
+    icon: "/icon",
   },
   openGraph: {
     title: "Shivanshu Shukla — Independent Product Engineer",
