@@ -32,10 +32,16 @@ export default function Navbar() {
     <header style={navStyle}>
       <nav style={{ maxWidth: 1280, margin: "0 auto", padding: "0 1.5rem", display: "flex", alignItems: "center", justifyContent: "space-between", height: 68 }}>
         {/* Logo */}
-        <a href="#" style={{ fontSize: "0.75rem", fontWeight: 500, letterSpacing: "0.2em", textTransform: "uppercase", color: "#f0ede8", textDecoration: "none", transition: "color 0.3s" }}
-          onMouseEnter={e => (e.currentTarget.style.color = "#c8f542")}
-          onMouseLeave={e => (e.currentTarget.style.color = "#f0ede8")}>
-          SS
+        <a href="#" style={{ display: "flex", alignItems: "center", gap: "1px", textDecoration: "none" }}
+          aria-label="Shivanshu Shukla">
+          <span style={{ fontSize: "0.8rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "#f0ede8", fontFamily: "Georgia, 'Times New Roman', serif", transition: "color 0.3s" }}
+            onMouseEnter={e => (e.currentTarget.style.color = "#c8f542")}
+            onMouseLeave={e => (e.currentTarget.style.color = "#f0ede8")}>
+            S
+          </span>
+          <span style={{ fontSize: "0.8rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "#c8f542", fontFamily: "Georgia, 'Times New Roman', serif" }}>
+            S
+          </span>
         </a>
 
         {/* Desktop nav */}
