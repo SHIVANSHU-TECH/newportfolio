@@ -15,6 +15,12 @@ export const metadata: Metadata = {
     "I turn ambitious ideas, difficult technical problems, and repetitive business processes into production-ready products, AI systems, and automations.",
   keywords: ["Product Engineer", "Full-Stack Engineer", "AI Builder", "Automation", "Shivanshu Shukla"],
   authors: [{ name: "Shivanshu Shukla" }],
+  icons: {
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
+    shortcut: "/icon.svg",
+  },
   openGraph: {
     title: "Shivanshu Shukla — Independent Product Engineer",
     description: "I don't build for everyone. I build what others haven't figured out yet.",
