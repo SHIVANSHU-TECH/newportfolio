@@ -6,6 +6,7 @@ const links = [
   { label: "Process", href: "#process" },
   { label: "About", href: "#about" },
   { label: "Contact", href: "#contact" },
+  { label: "Galaxy", href: "/v2" },
 ];
 
 export default function Navbar() {

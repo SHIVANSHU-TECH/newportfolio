@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  agentRules: false,
+  transpilePackages: ["three"],
   images: {
     remotePatterns: [
       {

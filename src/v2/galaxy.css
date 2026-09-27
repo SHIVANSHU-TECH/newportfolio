@@ -1,0 +1,333 @@
+html:has(.gxy),
+body:has(.gxy) {
+  overflow: hidden;
+  background: #010208;
+}
+
+.gxy {
+  position: relative;
+  min-height: 100vh;
+  background: #010208;
+  color: #f0ede8;
+  font-family: Inter, var(--font-inter), -apple-system, sans-serif;
+  overflow: hidden;
+}
+
+.gxy canvas {
+  position: fixed;
+  inset: 0;
+  display: block;
+}
+
+.gxy-labels {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.gxy-plabel {
+  position: absolute;
+  transform: translate(-50%, -130%);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  white-space: nowrap;
+  background: rgba(8, 9, 14, 0.72);
+  border: 1px solid #2a2c33;
+  padding: 0.28rem 0.55rem 0.28rem 0.28rem;
+  border-radius: 999px;
+}
+
+.gxy-plabel img {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.gxy-plabel span {
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  color: #d8d4c8;
+}
+
+.gxy-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 8;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 1.05rem 1.3rem;
+  pointer-events: none;
+}
+
+.gxy-nav a {
+  pointer-events: auto;
+  font-family: Georgia, serif;
+  letter-spacing: 0.18em;
+  text-decoration: none;
+  font-size: 0.85rem;
+  color: #f0ede8;
+}
+
+.gxy-nav i {
+  color: #c8f542;
+  font-style: normal;
+}
+
+.gxy-know {
+  position: fixed;
+  top: 1.05rem;
+  left: 1.2rem;
+  z-index: 9;
+  background: #f0ede8;
+  color: #111;
+  border: none;
+  padding: 0.62rem 0.95rem;
+  font: inherit;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+
+.gxy-know:hover {
+  background: #c8f542;
+}
+
+.gxy-intro {
+  position: fixed;
+  left: 1.4rem;
+  top: 20%;
+  z-index: 4;
+  max-width: 360px;
+  pointer-events: none;
+}
+
+.gxy-intro .eyebrow {
+  font-size: 0.62rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #8a867c;
+  margin-bottom: 1rem;
+}
+
+.gxy-intro h1 {
+  font-weight: 300;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  letter-spacing: -0.035em;
+  line-height: 1.06;
+}
+
+.gxy-intro em {
+  font-style: normal;
+  color: #6f6c64;
+}
+
+.gxy-intro .hint {
+  margin-top: 1rem;
+  color: #8a867c;
+  font-size: 0.8rem;
+  line-height: 1.65;
+  font-weight: 300;
+}
+
+.gxy-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 12;
+  background: rgba(3, 4, 10, 0.45);
+}
+
+.gxy-box {
+  position: fixed;
+  z-index: 13;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(520px, calc(100vw - 2rem));
+  max-height: calc(100vh - 2.4rem);
+  overflow: auto;
+  background: #0b0c12;
+  border: 1px solid #2a2c36;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+}
+
+.gxy-box-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 1rem 1rem 0.4rem 1.2rem;
+  gap: 1rem;
+}
+
+.gxy-kicker {
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  color: #c8f542;
+  text-transform: uppercase;
+}
+
+.gxy-box h2 {
+  font-weight: 400;
+  font-size: 1.45rem;
+  letter-spacing: -0.03em;
+  margin: 0.25rem 0 0.2rem;
+}
+
+.gxy-cat {
+  font-size: 0.68rem;
+  color: #6a675e;
+  letter-spacing: 0.08em;
+}
+
+.gxy-x {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border: 1px solid #2a2c33;
+  background: transparent;
+  color: #f0ede8;
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.gxy-x:hover {
+  border-color: #c8f542;
+  color: #c8f542;
+}
+
+.gxy-body {
+  padding: 0.8rem 1.2rem 1.3rem;
+}
+
+.gxy-body p {
+  color: #b7b3a8;
+  font-size: 0.88rem;
+  line-height: 1.7;
+  font-weight: 300;
+  margin-bottom: 1rem;
+}
+
+.gxy-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.gxy-tech span {
+  border: 1px solid #2d3038;
+  color: #c8c4b8;
+  font-size: 0.68rem;
+  padding: 0.3rem 0.6rem;
+}
+
+.gxy-vid {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  margin-bottom: 1rem;
+  object-fit: cover;
+}
+
+.gxy-link {
+  display: inline-flex;
+  background: #c8f542;
+  color: #111;
+  text-decoration: none;
+  font-size: 0.78rem;
+  padding: 0.75rem 1.05rem;
+  letter-spacing: 0.03em;
+}
+
+.gxy-me {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.gxy-me img {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  object-position: top;
+  border: 1px solid #2a2c33;
+}
+
+.gxy-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+  margin: 0.8rem 0 1rem;
+}
+
+.gxy-stats div {
+  border: 1px solid #22242c;
+  padding: 0.6rem 0.7rem;
+}
+
+.gxy-stats b {
+  display: block;
+  font-weight: 400;
+  font-size: 1rem;
+}
+
+.gxy-stats span {
+  font-size: 0.62rem;
+  color: #7a776e;
+}
+
+.gxy-legend {
+  position: fixed;
+  left: 1.2rem;
+  bottom: 1.2rem;
+  z-index: 5;
+  display: flex;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+}
+
+.gxy-legend button {
+  background: rgba(8, 9, 14, 0.7);
+  border: 1px solid #2a2c33;
+  color: #c8c4b8;
+  font: inherit;
+  font-size: 0.65rem;
+  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.55rem;
+  cursor: pointer;
+}
+
+.gxy-legend img {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.gxy-note {
+  position: fixed;
+  right: 1.2rem;
+  bottom: 1.2rem;
+  z-index: 5;
+  font-size: 0.62rem;
+  color: #4d5058;
+  max-width: 200px;
+  line-height: 1.5;
+}
+
+@media (max-width: 700px) {
+  .gxy-intro {
+    top: auto;
+    bottom: 5.5rem;
+  }
+}

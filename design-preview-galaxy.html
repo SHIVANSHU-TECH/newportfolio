@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Build Galaxy — design preview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #03040a;
+      --fg: #f0ede8;
+      --muted: #8a867c;
+      --accent: #c8f542;
+      --panel: #0b0c12;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(--fg); font-family: Inter, sans-serif; }
+    #canvas { position: fixed; inset: 0; display: block; }
+    #labels { position: fixed; inset: 0; pointer-events: none; z-index: 3; }
+    .plabel {
+      position: absolute; transform: translate(-50%, -120%);
+      display: flex; align-items: center; gap: 0.4rem;
+      pointer-events: none; white-space: nowrap;
+      background: rgba(8, 9, 14, 0.72); border: 1px solid #2a2c33;
+      padding: 0.28rem 0.5rem 0.28rem 0.28rem; border-radius: 999px;
+    }
+    .plabel img { width: 18px; height: 18px; border-radius: 50%; object-fit: cover; }
+    .plabel span { font-size: 0.62rem; letter-spacing: 0.06em; color: #d8d4c8; }
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 8;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.1rem 1.4rem; pointer-events: none;
+    }
+    nav a, nav button { pointer-events: auto; }
+    .brand { font-family: Georgia, serif; letter-spacing: 0.18em; text-decoration: none; font-size: 0.85rem; color: var(--fg); }
+    .brand i { color: var(--accent); font-style: normal; }
+
+    .know {
+      position: fixed; top: 1.05rem; left: 1.2rem; z-index: 9;
+      background: #f0ede8; color: #111; border: none;
+      padding: 0.62rem 0.95rem; font: inherit; font-size: 0.75rem; letter-spacing: 0.04em;
+    }
+    .know:hover { background: var(--accent); }
+    .know.off { display: none; }
+    .intro {
+      position: fixed; left: 1.4rem; top: 20%; z-index: 4; max-width: 360px;
+      pointer-events: none; opacity: 0; visibility: hidden;
+      transition: opacity 0.45s, visibility 0.45s;
+    }
+    .intro.on { opacity: 1; visibility: visible; }
+    .intro.dim { opacity: 0; visibility: hidden; }
+    .eyebrow { font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
+    h1 { font-weight: 300; font-size: clamp(2rem, 4vw, 3.2rem); letter-spacing: -0.035em; line-height: 1.06; }
+    h1 em { font-style: normal; color: #6f6c64; }
+    .hint { margin-top: 1rem; color: var(--muted); font-size: 0.8rem; line-height: 1.65; font-weight: 300; }
+
+    .overlay {
+      position: fixed; inset: 0; z-index: 12; display: none;
+      background: rgba(3, 4, 10, 0.45);
+    }
+    .overlay.on { display: block; }
+    .box {
+      position: fixed; z-index: 13; display: none;
+      top: 50%; left: 50%; transform: translate(-50%, -50%);
+      width: min(520px, calc(100vw - 2rem));
+      max-height: calc(100vh - 2.4rem);
+      overflow: auto;
+      background: var(--panel);
+      border: 1px solid #2a2c36;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.55);
+    }
+    .box.on { display: block; }
+    .box-top {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      padding: 1rem 1rem 0.4rem 1.2rem; gap: 1rem;
+    }
+    .box-kicker { font-size: 0.62rem; letter-spacing: 0.16em; color: var(--accent); text-transform: uppercase; }
+    .box h2 { font-weight: 400; font-size: 1.45rem; letter-spacing: -0.03em; margin: 0.25rem 0 0.2rem; }
+    .box .cat { font-size: 0.68rem; color: #6a675e; letter-spacing: 0.08em; }
+    .x {
+      width: 36px; height: 36px; flex-shrink: 0;
+      border: 1px solid #2a2c33; background: transparent; color: var(--fg);
+      font-size: 1.2rem; line-height: 1; font-family: inherit;
+    }
+    .x:hover { border-color: var(--accent); color: var(--accent); }
+    .box-body { padding: 0.8rem 1.2rem 1.3rem; }
+    .box-body p { color: #b7b3a8; font-size: 0.88rem; line-height: 1.7; font-weight: 300; margin-bottom: 1rem; }
+    .tech { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem; }
+    .tech span { border: 1px solid #2d3038; color: #c8c4b8; font-size: 0.68rem; padding: 0.3rem 0.6rem; }
+    .vid { width: 100%; aspect-ratio: 16/9; background: #000; margin-bottom: 1rem; display: none; object-fit: cover; }
+    .vid.on { display: block; }
+    .link {
+      display: inline-flex; background: var(--accent); color: #111;
+      text-decoration: none; font-size: 0.78rem; padding: 0.75rem 1.05rem; letter-spacing: 0.03em;
+    }
+    .link.off { display: none; }
+    .me-row { display: flex; gap: 1rem; align-items: center; margin-bottom: 1rem; }
+    .me-row img { width: 72px; height: 72px; object-fit: cover; object-position: top; border: 1px solid #2a2c33; }
+    .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin: 0.8rem 0 1rem; }
+    .stats div { border: 1px solid #22242c; padding: 0.6rem 0.7rem; }
+    .stats b { display: block; font-weight: 400; font-size: 1rem; }
+    .stats span { font-size: 0.62rem; color: #7a776e; }
+
+    .legend {
+      position: fixed; left: 1.2rem; bottom: 1.2rem; z-index: 5;
+      display: flex; gap: 0.7rem; flex-wrap: wrap;
+    }
+    .legend button {
+      pointer-events: auto;
+      background: rgba(8,9,14,0.7); border: 1px solid #2a2c33; color: #c8c4b8;
+      font: inherit; font-size: 0.65rem; letter-spacing: 0.04em;
+      display: flex; align-items: center; gap: 0.4rem; padding: 0.35rem 0.55rem;
+    }
+    .legend img { width: 16px; height: 16px; border-radius: 50%; object-fit: cover; }
+    .note { position: fixed; right: 1.2rem; bottom: 1.2rem; z-index: 5; font-size: 0.62rem; color: #4d5058; max-width: 200px; line-height: 1.5; }
+    .fail { position: fixed; inset: 0; display: none; place-items: center; z-index: 20; background: var(--bg); text-align: center; padding: 2rem; }
+    .fail.show { display: grid; }
+    @media (max-width: 700px) {
+      .intro { top: auto; bottom: 5.5rem; }
+      h1 { font-size: 1.7rem; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+  <div id="labels"></div>
+  <nav>
+    <span></span>
+    <a class="brand" href="./design-preview.html">S<i>S</i></a>
+  </nav>
+  <button class="know" type="button" id="know">Know about us</button>
+
+  <div class="intro" id="intro">
+    <p class="eyebrow">One finite system · four worlds</p>
+    <h1>I don’t build<br />for everyone.<br /><em>I build worlds.</em></h1>
+    <p class="hint">Click a planet for the project. Click the ship to meet me. Close resets the view.</p>
+  </div>
+
+  <div class="overlay" id="overlay"></div>
+
+  <article class="box" id="projectBox" aria-modal="true">
+    <div class="box-top">
+      <div>
+        <div class="box-kicker" id="pNum">01</div>
+        <h2 id="pName"></h2>
+        <div class="cat" id="pCat"></div>
+      </div>
+      <button class="x" type="button" id="closeProject" aria-label="Close">×</button>
+    </div>
+    <div class="box-body">
+      <p id="pCopy"></p>
+      <div class="tech" id="pTech"></div>
+      <video class="vid" id="pVid" controls playsinline></video>
+      <a class="link" id="pLink" href="#" target="_blank" rel="noreferrer">Open site →</a>
+    </div>
+  </article>
+
+  <article class="box" id="meBox" aria-modal="true">
+    <div class="box-top">
+      <div>
+        <div class="box-kicker">The ship</div>
+        <h2>Shivanshu Shukla</h2>
+        <div class="cat">Independent Product Engineer · New Delhi</div>
+      </div>
+      <button class="x" type="button" id="closeMe" aria-label="Close">×</button>
+    </div>
+    <div class="box-body">
+      <div class="me-row">
+        <img src="./public/images/shivanshu.jpeg" alt="Shivanshu Shukla" />
+        <p style="margin:0">I work at the intersection of software, AI, and business problems. Founder of CollegeXConnect. I take a problem from architecture to production.</p>
+      </div>
+      <div class="stats">
+        <div><b>3K+</b><span>Users on CollegeXConnect</span></div>
+        <div><b>250K+</b><span>Platform visitors</span></div>
+        <div><b>~97%</b><span>Infra cost reduction</span></div>
+        <div><b>4</b><span>Worlds in this system</span></div>
+      </div>
+      <div class="tech">
+        <span>Full-stack</span><span>AI systems</span><span>Automation</span><span>AWS</span>
+      </div>
+      <a class="link" href="mailto:shivanshushukla2022@gmail.com">Start a conversation →</a>
+    </div>
+  </article>
+
+  <div class="legend" id="legend"></div>
+  <p class="note">Finite system. Four planets, one sun, one ship. Close resets the view.</p>
+  <div class="fail" id="fail"><div><p>WebGL could not start.</p></div></div>
+
+  <script src="https://unpkg.com/three@0.160.1/build/three.min.js"></script>
+  <script>
+    const SYSTEM_RADIUS = 11;
+    const HOME_CAM = new THREE.Vector3(0, 2.4, 14.2);
+
+    const worlds = [
+      {
+        id: "cxc", num: "01", name: "CollegeXConnect",
+        cat: "Product · Full-stack · Community",
+        copy: "An all-in-one student platform for jobs, internships, resources, and community. Built end-to-end: auth, feeds, CMS, and deployment.",
+        tech: ["Next.js", "Node.js", "MongoDB", "AWS", "Cloudinary"],
+        href: "https://collegexconnect.com",
+        icon: "./public/icons/Collegexconnect.ico",
+        video: "",
+        color: 0x8ec5d4, emissive: 0x163038, size: 0.92, orbit: 3.85, speed: 0.16, phase: 0.3, y: 0.12,
+      },
+      {
+        id: "voice", num: "02", name: "AI Voice Assistant",
+        cat: "Desktop · Agent · Automation",
+        copy: "A desktop AI assistant with conversational memory, request routing, and gated local automation. Cut repetitive interactions by about 65%.",
+        tech: ["React", "Electron.js", "WebSockets", "Gemini API"],
+        href: "https://github.com/shivanshu-tech",
+        icon: "./public/images/VoiceAssistant.png",
+        video: "./public/video/VoiceAssistant.mp4",
+        color: 0xc8f542, emissive: 0x2a3a08, size: 0.78, orbit: 5.45, speed: 0.12, phase: 1.8, y: -0.18,
+      },
+      {
+        id: "brain", num: "03", name: "CompanyBrain",
+        cat: "Enterprise · Knowledge · RAG",
+        copy: "Conversational search across enterprise documents. Parsing, chunking, indexing, and vector retrieval with offline caching around 1.3s latency.",
+        tech: ["React", "Vector Search", "PDF Parsing", "Electron"],
+        href: "https://github.com/shivanshu-tech",
+        icon: "./public/images/Company_Brain.png",
+        video: "./public/video/Company_Brain.mp4",
+        color: 0xa8e6cf, emissive: 0x143028, size: 0.84, orbit: 7.05, speed: 0.09, phase: 3.4, y: 0.28,
+      },
+      {
+        id: "apply", num: "04", name: "ApplyAI",
+        cat: "Recruitment · Platform · AI",
+        copy: "Resume parsing, semantic ranking, and job-role similarity. Gemini-powered evaluation with improvement recommendations.",
+        tech: ["Next.js", "Gemini API", "Resume Parser", "Shadcn UI", "RBAC"],
+        href: "https://github.com/shivanshu-tech",
+        icon: "./public/images/ApplyAI.png",
+        video: "./public/video/ApplyAI.mp4",
+        color: 0xb79cff, emissive: 0x1c1430, size: 0.76, orbit: 8.65, speed: 0.07, phase: 5.1, y: -0.08,
+      },
+    ];
+
+    const canvas = document.getElementById("canvas");
+    const labelsEl = document.getElementById("labels");
+    const intro = document.getElementById("intro");
+    const knowBtn = document.getElementById("know");
+    let storyOpen = false;
+    const overlay = document.getElementById("overlay");
+    const projectBox = document.getElementById("projectBox");
+    const meBox = document.getElementById("meBox");
+    const pVid = document.getElementById("pVid");
+
+    let renderer;
+    try {
+      renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.15;
+    } catch (e) {
+      document.getElementById("fail").classList.add("show");
+      throw e;
+    }
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x010208);
+
+    const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 400);
+    camera.position.copy(HOME_CAM);
+
+    const clock = new THREE.Clock();
+    const pointer = new THREE.Vector2();
+    const raycaster = new THREE.Raycaster();
+    const targetCam = HOME_CAM.clone();
+    const targetLook = new THREE.Vector3(0, 0, 0);
+    const look = new THREE.Vector3();
+    let selected = null;
+    let dragging = false;
+    let moved = false;
+    let lastX = 0;
+    let lastY = 0;
+    let yaw = 0.2;
+    let pitch = 0.12;
+
+    function resize() {
+      const w = innerWidth, h = innerHeight;
+      renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    }
+    resize();
+    addEventListener("resize", resize);
+
+    function hash2(x, y) {
+      const s = Math.sin(x * 127.1 + y * 311.7) * 43758.5453;
+      return s - Math.floor(s);
+    }
+    function noise2(x, y) {
+      const xi = Math.floor(x), yi = Math.floor(y);
+      const xf = x - xi, yf = y - yi;
+      const u = xf * xf * (3 - 2 * xf);
+      const v = yf * yf * (3 - 2 * yf);
+      return hash2(xi, yi) * (1 - u) * (1 - v) + hash2(xi + 1, yi) * u * (1 - v) + hash2(xi, yi + 1) * (1 - u) * v + hash2(xi + 1, yi + 1) * u * v;
+    }
+    function fbm(x, y) {
+      let a = 0, amp = 0.5, f = 1;
+      for (let i = 0; i < 5; i++) { a += noise2(x * f, y * f) * amp; f *= 2; amp *= 0.52; }
+      return a;
+    }
+
+    function planetMaps(src, tint) {
+      const w = 1024, h = 512;
+      const color = document.createElement("canvas");
+      const emit = document.createElement("canvas");
+      const rough = document.createElement("canvas");
+      color.width = emit.width = rough.width = w;
+      color.height = emit.height = rough.height = h;
+      const c = color.getContext("2d");
+      const e = emit.getContext("2d");
+      const r = rough.getContext("2d");
+      const ocean = new THREE.Color(tint).multiplyScalar(0.35);
+      const land = new THREE.Color(tint);
+      c.fillStyle = "#" + ocean.getHexString();
+      c.fillRect(0, 0, w, h);
+      e.fillStyle = "#000";
+      e.fillRect(0, 0, w, h);
+      const imgData = c.getImageData(0, 0, w, h);
+      const rData = r.createImageData(w, h);
+      for (let y = 0; y < h; y++) {
+        for (let x = 0; x < w; x++) {
+          const nx = x / w * 6;
+          const ny = y / h * 3;
+          const n = fbm(nx, ny);
+          const pole = Math.abs(y / h - 0.5) * 2;
+          const i = (y * w + x) * 4;
+          if (n > 0.48 || pole > 0.86) {
+            const mix = Math.min(1, (n - 0.48) * 3 + (pole > 0.86 ? 0.4 : 0));
+            imgData.data[i] = Math.floor(land.r * 255 * (0.55 + mix * 0.45));
+            imgData.data[i + 1] = Math.floor(land.g * 255 * (0.55 + mix * 0.45));
+            imgData.data[i + 2] = Math.floor(land.b * 255 * (0.55 + mix * 0.45));
+            if (pole > 0.86) {
+              imgData.data[i] = imgData.data[i + 1] = imgData.data[i + 2] = 220;
+            }
+            rData.data[i] = rData.data[i + 1] = rData.data[i + 2] = 160;
+          } else {
+            rData.data[i] = rData.data[i + 1] = rData.data[i + 2] = 30;
+          }
+          rData.data[i + 3] = 255;
+        }
+      }
+      c.putImageData(imgData, 0, 0);
+      r.putImageData(rData, 0, 0);
+      const colorTex = new THREE.CanvasTexture(color);
+      const emitTex = new THREE.CanvasTexture(emit);
+      const roughTex = new THREE.CanvasTexture(rough);
+      colorTex.colorSpace = THREE.SRGBColorSpace;
+      colorTex.anisotropy = 8;
+      emitTex.colorSpace = THREE.SRGBColorSpace;
+      const img = new Image();
+      img.onload = () => {
+        c.save();
+        c.globalAlpha = 0.72;
+        c.globalCompositeOperation = "overlay";
+        c.drawImage(img, 0, h * 0.18, w, h * 0.64);
+        c.restore();
+        c.save();
+        c.globalAlpha = 0.38;
+        c.drawImage(img, 0, h * 0.22, w * 0.5, h * 0.56);
+        c.drawImage(img, w * 0.5, h * 0.22, w * 0.5, h * 0.56);
+        c.restore();
+        const cap = c.createLinearGradient(0, 0, 0, h);
+        cap.addColorStop(0, "rgba(245,245,255,0.55)");
+        cap.addColorStop(0.12, "rgba(0,0,0,0)");
+        cap.addColorStop(0.88, "rgba(0,0,0,0)");
+        cap.addColorStop(1, "rgba(245,245,255,0.55)");
+        c.fillStyle = cap;
+        c.fillRect(0, 0, w, h);
+        e.drawImage(img, 0, h * 0.2, w, h * 0.6);
+        e.globalCompositeOperation = "multiply";
+        e.fillStyle = "#1a1208";
+        e.fillRect(0, 0, w, h);
+        colorTex.needsUpdate = true;
+        emitTex.needsUpdate = true;
+      };
+      img.src = src;
+      return { colorTex, emitTex, roughTex };
+    }
+
+    function cloudTexture() {
+      const w = 512, h = 256;
+      const cnv = document.createElement("canvas");
+      cnv.width = w; cnv.height = h;
+      const ctx = cnv.getContext("2d");
+      for (let y = 0; y < h; y += 2) {
+        for (let x = 0; x < w; x += 2) {
+          const n = fbm(x / 55, y / 42);
+          const a = n > 0.56 ? Math.min(0.5, (n - 0.56) * 2) : 0;
+          if (a > 0.02) {
+            ctx.fillStyle = "rgba(255,255,255," + a + ")";
+            ctx.fillRect(x, y, 2, 2);
+          }
+        }
+      }
+      const tex = new THREE.CanvasTexture(cnv);
+      tex.anisotropy = 4;
+      return tex;
+    }
+
+    function starSprite() {
+      const c = document.createElement("canvas");
+      c.width = c.height = 64;
+      const ctx = c.getContext("2d");
+      const g = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+      g.addColorStop(0, "rgba(255,255,255,1)");
+      g.addColorStop(0.2, "rgba(255,250,230,0.9)");
+      g.addColorStop(0.45, "rgba(200,220,255,0.25)");
+      g.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, 64, 64);
+      return new THREE.CanvasTexture(c);
+    }
+
+    function makeStars(count, radius, size, color, attenuate) {
+      const pos = new Float32Array(count * 3);
+      for (let i = 0; i < count; i++) {
+        const r = radius * (0.86 + Math.random() * 0.2);
+        const theta = Math.random() * Math.PI * 2;
+        const phi = Math.acos(2 * Math.random() - 1);
+        pos[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+        pos[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+        pos[i * 3 + 2] = r * Math.cos(phi);
+      }
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+      return new THREE.Points(geo, new THREE.PointsMaterial({
+        color, size, map: starSprite(), transparent: true, depthWrite: false,
+        blending: THREE.AdditiveBlending, sizeAttenuation: attenuate,
+      }));
+    }
+    scene.add(makeStars(7000, 90, 0.55, 0xffffff, true));
+    scene.add(makeStars(1800, 70, 1.15, 0xfff4d2, true));
+    scene.add(makeStars(400, 55, 1.8, 0xc8f542, true));
+
+    const gCount = 2200;
+    const gPos = new Float32Array(gCount * 3);
+    const gCol = new Float32Array(gCount * 3);
+    const lime = new THREE.Color(0xc8f542);
+    const dust = new THREE.Color(0x8a90a0);
+    const MAX_ARM = 9.1;
+    for (let i = 0; i < gCount; i++) {
+      const t = Math.random();
+      const radius = 1.4 + t * (MAX_ARM - 1.4);
+      const arm = i % 4;
+      const a = radius * 0.7 + arm * (Math.PI / 2) + (Math.random() - 0.5) * 0.28;
+      gPos[i * 3] = Math.cos(a) * radius;
+      gPos[i * 3 + 1] = (Math.random() - 0.5) * 0.22;
+      gPos[i * 3 + 2] = Math.sin(a) * radius;
+      const c = lime.clone().lerp(dust, 0.35 + Math.random() * 0.5);
+      gCol[i * 3] = c.r; gCol[i * 3 + 1] = c.g; gCol[i * 3 + 2] = c.b;
+    }
+    const gGeo = new THREE.BufferGeometry();
+    gGeo.setAttribute("position", new THREE.BufferAttribute(gPos, 3));
+    gGeo.setAttribute("color", new THREE.BufferAttribute(gCol, 3));
+    scene.add(new THREE.Points(gGeo, new THREE.PointsMaterial({
+      size: 0.03, vertexColors: true, transparent: true, opacity: 0.7,
+      depthWrite: false, blending: THREE.AdditiveBlending,
+    })));
+
+    const edge = new THREE.Mesh(
+      new THREE.RingGeometry(MAX_ARM + 0.05, MAX_ARM + 0.09, 128),
+      new THREE.MeshBasicMaterial({ color: 0xc8f542, transparent: true, opacity: 0.18, side: THREE.DoubleSide })
+    );
+    edge.rotation.x = Math.PI / 2;
+    scene.add(edge);
+    const edge2 = new THREE.Mesh(
+      new THREE.RingGeometry(SYSTEM_RADIUS - 0.02, SYSTEM_RADIUS, 96),
+      new THREE.MeshBasicMaterial({ color: 0xf0ede8, transparent: true, opacity: 0.06, side: THREE.DoubleSide })
+    );
+    edge2.rotation.x = Math.PI / 2;
+    scene.add(edge2);
+
+    const sunGroup = new THREE.Group();
+    const sunBody = new THREE.Mesh(
+      new THREE.SphereGeometry(1.05, 64, 64),
+      new THREE.MeshBasicMaterial({ color: 0xffc14a })
+    );
+    const sunCore = new THREE.Mesh(
+      new THREE.SphereGeometry(0.72, 32, 32),
+      new THREE.MeshBasicMaterial({ color: 0xfff1b0 })
+    );
+    const corona = new THREE.Mesh(
+      new THREE.SphereGeometry(1.55, 32, 32),
+      new THREE.MeshBasicMaterial({ color: 0xff9a1f, transparent: true, opacity: 0.16 })
+    );
+    const corona2 = new THREE.Mesh(
+      new THREE.SphereGeometry(2.15, 32, 32),
+      new THREE.MeshBasicMaterial({ color: 0xff7a00, transparent: true, opacity: 0.06 })
+    );
+    sunGroup.add(sunBody, sunCore, corona, corona2);
+    scene.add(sunGroup);
+    scene.add(new THREE.PointLight(0xffc14a, 70, 32, 1.6));
+    scene.add(new THREE.AmbientLight(0x4a4638, 0.28));
+    const fill = new THREE.DirectionalLight(0xffe6b0, 0.55);
+    fill.position.set(2, 3, 8);
+    scene.add(fill);
+
+    const clickables = [];
+    const planetMeshes = [];
+    const labelNodes = [];
+    const cloudsTex = cloudTexture();
+
+    worlds.forEach((w) => {
+      const ring = new THREE.Mesh(
+        new THREE.RingGeometry(w.orbit - 0.012, w.orbit + 0.012, 140),
+        new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.1, side: THREE.DoubleSide })
+      );
+      ring.rotation.x = Math.PI / 2;
+      scene.add(ring);
+
+      const maps = planetMaps(w.icon, w.color);
+      const mesh = new THREE.Mesh(
+        new THREE.SphereGeometry(w.size, 96, 96),
+        new THREE.MeshStandardMaterial({
+          map: maps.colorTex,
+          emissiveMap: maps.emitTex,
+          emissive: 0xffcc88,
+          emissiveIntensity: 0.22,
+          roughnessMap: maps.roughTex,
+          roughness: 0.82,
+          metalness: 0.04,
+        })
+      );
+      mesh.userData = { kind: "planet", world: w };
+      const clouds = new THREE.Mesh(
+        new THREE.SphereGeometry(w.size * 1.025, 48, 48),
+        new THREE.MeshStandardMaterial({
+          map: cloudsTex,
+          transparent: true,
+          opacity: 0.42,
+          depthWrite: false,
+          roughness: 1,
+          metalness: 0,
+        })
+      );
+      clouds.userData = { spin: 0.0018 + Math.random() * 0.001 };
+      mesh.add(clouds);
+      const atmo = new THREE.Mesh(
+        new THREE.SphereGeometry(w.size * 1.12, 48, 48),
+        new THREE.MeshBasicMaterial({
+          color: w.color, transparent: true, opacity: 0.16, side: THREE.BackSide, depthWrite: false,
+        })
+      );
+      const halo = new THREE.Mesh(
+        new THREE.SphereGeometry(w.size * 1.2, 32, 32),
+        new THREE.MeshBasicMaterial({
+          color: 0xb8d4ff, transparent: true, opacity: 0.06, side: THREE.BackSide, depthWrite: false,
+        })
+      );
+      mesh.add(atmo, halo);
+      scene.add(mesh);
+      clickables.push(mesh);
+      planetMeshes.push(mesh);
+
+      const tag = document.createElement("div");
+      tag.className = "plabel";
+      tag.innerHTML = "<img alt='' src='" + w.icon + "' /><span>" + w.name + "</span>";
+      labelsEl.appendChild(tag);
+      labelNodes.push({ el: tag, mesh });
+    });
+
+    function hullSkin() {
+      const c = document.createElement("canvas");
+      c.width = 256; c.height = 256;
+      const ctx = c.getContext("2d");
+      ctx.fillStyle = "#c9c6bf";
+      ctx.fillRect(0, 0, 256, 256);
+      ctx.strokeStyle = "rgba(40,40,40,0.25)";
+      ctx.lineWidth = 1;
+      for (let i = 0; i < 12; i++) {
+        ctx.beginPath(); ctx.moveTo(0, i * 22); ctx.lineTo(256, i * 22); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(i * 22, 0); ctx.lineTo(i * 22, 256); ctx.stroke();
+      }
+      ctx.fillStyle = "#8b8680";
+      for (let i = 0; i < 18; i++) ctx.fillRect((i * 47) % 240, (i * 31) % 240, 14, 8);
+      const tex = new THREE.CanvasTexture(c);
+      tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+      tex.repeat.set(3, 1);
+      return tex;
+    }
+
+    function makeShip() {
+      const g = new THREE.Group();
+      const skin = hullSkin();
+      const bodyMat = new THREE.MeshStandardMaterial({ map: skin, color: 0xffffff, metalness: 0.55, roughness: 0.35 });
+      const tileMat = new THREE.MeshStandardMaterial({ color: 0x3a2a22, metalness: 0.15, roughness: 0.85 });
+      const darkMat = new THREE.MeshStandardMaterial({ color: 0x1b1d22, metalness: 0.7, roughness: 0.28 });
+      const glassMat = new THREE.MeshPhysicalMaterial({
+        color: 0x87c5ff, metalness: 0.1, roughness: 0.05, transmission: 0.55,
+        transparent: true, opacity: 0.85, emissive: 0x1a3a55, emissiveIntensity: 0.35,
+      });
+
+      const fuselage = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.32, 2.1, 20), bodyMat);
+      fuselage.rotation.z = Math.PI / 2;
+      const belly = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.28, 1.9, 16, 1, false, 0, Math.PI), tileMat);
+      belly.rotation.z = Math.PI / 2;
+      belly.rotation.x = Math.PI;
+      belly.position.y = -0.08;
+      const nose = new THREE.Mesh(new THREE.ConeGeometry(0.22, 0.7, 20), bodyMat);
+      nose.rotation.z = -Math.PI / 2;
+      nose.position.x = 1.35;
+      const cockpit = new THREE.Mesh(new THREE.SphereGeometry(0.2, 20, 16, 0, Math.PI * 2, 0, Math.PI * 0.55), glassMat);
+      cockpit.position.set(0.72, 0.16, 0);
+      cockpit.rotation.z = -0.35;
+
+      const wingShape = new THREE.Shape();
+      wingShape.moveTo(0, 0);
+      wingShape.lineTo(-1.15, 0.95);
+      wingShape.lineTo(-0.35, 0.95);
+      wingShape.lineTo(0.55, 0.08);
+      wingShape.closePath();
+      const wingGeo = new THREE.ExtrudeGeometry(wingShape, { depth: 0.045, bevelEnabled: false });
+      const wingL = new THREE.Mesh(wingGeo, darkMat);
+      wingL.rotation.x = Math.PI / 2;
+      wingL.position.set(0.1, -0.02, 0.12);
+      const wingR = wingL.clone();
+      wingR.scale.z = -1;
+      wingR.position.z = -0.12;
+
+      const tail = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.72, 0.05), darkMat);
+      tail.position.set(-0.55, 0.38, 0);
+      tail.rotation.z = 0.35;
+
+      const engineMat = new THREE.MeshStandardMaterial({ color: 0x111318, metalness: 0.8, roughness: 0.25 });
+      const glowMat = new THREE.MeshStandardMaterial({ color: 0x66d4ff, emissive: 0x3aa0ff, emissiveIntensity: 2.4 });
+      [-0.16, 0.16].forEach((z) => {
+        const bell = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.14, 0.32, 16), engineMat);
+        bell.rotation.z = Math.PI / 2;
+        bell.position.set(-1.2, 0, z);
+        const glow = new THREE.Mesh(new THREE.CircleGeometry(0.09, 16), glowMat);
+        glow.rotation.y = Math.PI / 2;
+        glow.position.set(-1.37, 0, z);
+        g.add(bell, glow);
+      });
+      const plume = new THREE.PointLight(0x4db8ff, 8, 8);
+      plume.position.set(-1.5, 0, 0);
+
+      const hit = new THREE.Mesh(
+        new THREE.BoxGeometry(3.2, 1.4, 2.2),
+        new THREE.MeshBasicMaterial({ transparent: true, opacity: 0 })
+      );
+      g.add(fuselage, belly, nose, cockpit, wingL, wingR, tail, plume, hit);
+      g.userData = { kind: "ship" };
+      g.scale.setScalar(1.35);
+      return g;
+    }
+    const ship = makeShip();
+    scene.add(ship);
+    clickables.push(ship);
+
+    const shipTag = document.createElement("div");
+    shipTag.className = "plabel";
+    shipTag.innerHTML = "<span>SHIP · About me</span>";
+    labelsEl.appendChild(shipTag);
+
+    const legend = document.getElementById("legend");
+    worlds.forEach((w, i) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.innerHTML = "<img alt='' src='" + w.icon + "' />" + w.name;
+      b.addEventListener("click", (e) => { e.stopPropagation(); openPlanet(planetMeshes[i]); });
+      legend.appendChild(b);
+    });
+    const shipBtn = document.createElement("button");
+    shipBtn.type = "button";
+    shipBtn.textContent = "Ship · About me";
+    shipBtn.addEventListener("click", (e) => { e.stopPropagation(); openShip(); });
+    legend.appendChild(shipBtn);
+
+    function projectLabel(mesh, el) {
+      const v = mesh.getWorldPosition(new THREE.Vector3());
+      v.project(camera);
+      const x = (v.x * 0.5 + 0.5) * innerWidth;
+      const y = (-v.y * 0.5 + 0.5) * innerHeight;
+      const behind = v.z > 1;
+      el.style.left = x + "px";
+      el.style.top = y + "px";
+      el.style.opacity = behind || selected ? "0" : "1";
+    }
+
+    function stopVideo() {
+      pVid.pause();
+      pVid.removeAttribute("src");
+      pVid.load();
+      pVid.classList.remove("on");
+    }
+
+    knowBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      storyOpen = true;
+      knowBtn.classList.add("off");
+      intro.classList.add("on");
+      intro.classList.remove("dim");
+    });
+
+    function resetView() {
+      selected = null;
+      targetCam.copy(HOME_CAM);
+      targetLook.set(0, 0, 0);
+      overlay.classList.remove("on");
+      projectBox.classList.remove("on");
+      meBox.classList.remove("on");
+      if (storyOpen) {
+        intro.classList.add("on");
+        intro.classList.remove("dim");
+      } else {
+        intro.classList.remove("on");
+      }
+      stopVideo();
+    }
+
+    function openPlanet(mesh) {
+      selected = mesh;
+      const w = mesh.userData.world;
+      const pos = mesh.getWorldPosition(new THREE.Vector3());
+      const dir = pos.clone().normalize();
+      targetCam.copy(pos.clone().add(dir.multiplyScalar(2.15)).add(new THREE.Vector3(1.1, 0.4, 0.8)));
+      targetLook.copy(pos);
+      intro.classList.add("dim");
+      intro.classList.remove("on");
+      meBox.classList.remove("on");
+      overlay.classList.add("on");
+      projectBox.classList.add("on");
+      document.getElementById("pNum").textContent = "Planet " + w.num;
+      document.getElementById("pName").textContent = w.name;
+      document.getElementById("pCat").textContent = w.cat;
+      document.getElementById("pCopy").textContent = w.copy;
+      document.getElementById("pTech").innerHTML = w.tech.map((t) => "<span>" + t + "</span>").join("");
+      const link = document.getElementById("pLink");
+      if (w.href) {
+        link.href = w.href;
+        link.classList.remove("off");
+      } else {
+        link.classList.add("off");
+      }
+      if (w.video) {
+        pVid.src = w.video;
+        pVid.classList.add("on");
+      } else {
+        stopVideo();
+      }
+    }
+
+    function openShip() {
+      selected = ship;
+      const pos = ship.getWorldPosition(new THREE.Vector3());
+      targetCam.copy(pos.clone().add(new THREE.Vector3(1.6, 0.7, 2.2)));
+      targetLook.copy(pos);
+      intro.classList.add("dim");
+      intro.classList.remove("on");
+      projectBox.classList.remove("on");
+      stopVideo();
+      overlay.classList.add("on");
+      meBox.classList.add("on");
+    }
+
+    document.getElementById("closeProject").addEventListener("click", resetView);
+    document.getElementById("closeMe").addEventListener("click", resetView);
+    overlay.addEventListener("click", resetView);
+    addEventListener("keydown", (e) => { if (e.key === "Escape") resetView(); });
+
+    addEventListener("pointermove", (e) => {
+      pointer.x = (e.clientX / innerWidth) * 2 - 1;
+      pointer.y = -(e.clientY / innerHeight) * 2 + 1;
+      if (dragging) {
+        const dx = e.clientX - lastX;
+        const dy = e.clientY - lastY;
+        if (Math.abs(dx) + Math.abs(dy) > 4) moved = true;
+        yaw -= dx * 0.005;
+        pitch = Math.max(-0.4, Math.min(0.45, pitch + dy * 0.003));
+        lastX = e.clientX;
+        lastY = e.clientY;
+      }
+    });
+    addEventListener("pointerdown", (e) => {
+      if (e.target.closest(".box, nav, .legend, .know")) return;
+      dragging = true;
+      moved = false;
+      lastX = e.clientX;
+      lastY = e.clientY;
+    });
+    addEventListener("pointerup", (e) => {
+      if (!dragging) return;
+      dragging = false;
+      if (moved || e.target.closest(".box, nav, .legend, .overlay, .know")) return;
+      raycaster.setFromCamera(pointer, camera);
+      const hits = raycaster.intersectObjects(clickables, true);
+      if (!hits.length) return;
+      let obj = hits[0].object;
+      while (obj && !obj.userData.kind) obj = obj.parent;
+      if (!obj) return;
+      if (obj.userData.kind === "planet") openPlanet(obj);
+      if (obj.userData.kind === "ship") openShip();
+    });
+
+    function clampCam(v) {
+      const max = SYSTEM_RADIUS + 4.2;
+      if (v.length() > max) v.setLength(max);
+      return v;
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+      const t = clock.getElapsedTime();
+      sunGroup.rotation.y = t * 0.08;
+      corona.scale.setScalar(1 + Math.sin(t * 1.8) * 0.04);
+
+      planetMeshes.forEach((mesh) => {
+        const w = mesh.userData.world;
+        const a = t * w.speed + w.phase;
+        mesh.position.set(Math.cos(a) * w.orbit, w.y + Math.sin(t * 0.35 + w.phase) * 0.06, Math.sin(a) * w.orbit);
+        mesh.rotation.y += 0.0035;
+        mesh.children.forEach((ch) => {
+          if (ch.userData.spin) ch.rotation.y += ch.userData.spin;
+        });
+      });
+
+      const sa = t * 0.18;
+      ship.position.set(Math.cos(sa) * 6.2, 1.35 + Math.sin(t * 0.7) * 0.25, Math.sin(sa) * 6.2);
+      ship.lookAt(0, 0.2, 0);
+      ship.rotateY(Math.PI);
+      projectLabel(ship, shipTag);
+
+      if (!selected) {
+        const r = 14.2;
+        targetCam.set(Math.sin(yaw) * r, 2.4 + pitch * 3.2, Math.cos(yaw) * r);
+        clampCam(targetCam);
+        targetLook.set(0, 0, 0);
+        yaw += 0.0004;
+      }
+
+      camera.position.lerp(targetCam, 0.06);
+      look.lerp(targetLook, 0.08);
+      camera.lookAt(look);
+      labelNodes.forEach((n) => projectLabel(n.mesh, n.el));
+      renderer.render(scene, camera);
+    }
+    animate();
+  </script>
+</body>
+</html>

@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crafted design — Shivanshu Shukla</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0c0c0c;
+      --fg: #f0ede8;
+      --muted: #6b6b6b;
+      --dim: #3a3a3a;
+      --line: #1f1f1f;
+      --accent: #c8f542;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: Inter, -apple-system, sans-serif;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 80;
+      opacity: 0.18;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+    }
+
+    .cursor {
+      position: fixed;
+      width: 12px;
+      height: 12px;
+      border: 1px solid var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 200;
+      transform: translate(-50%, -50%);
+      transition: width 0.25s, height 0.25s, background 0.25s;
+      mix-blend-mode: difference;
+    }
+    .cursor.on-btn {
+      width: 44px;
+      height: 44px;
+      background: rgba(200, 245, 66, 0.12);
+    }
+
+    a, button { cursor: none; }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      height: 68px;
+      background: rgba(12, 12, 12, 0.72);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid transparent;
+    }
+    .brand { font-family: Georgia, serif; letter-spacing: 0.18em; font-size: 0.85rem; text-decoration: none; }
+    .brand .c { color: var(--fg); }
+    .brand .a { color: var(--accent); }
+    .nav-links { display: flex; align-items: center; gap: 2rem; }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+    }
+    .nav-links a:hover { color: var(--fg); }
+    .nav-cta {
+      border: 1px solid #2a2a2a;
+      color: var(--fg);
+      padding: 0.45rem 1rem;
+      text-decoration: none;
+      font-size: 0.75rem;
+      letter-spacing: 0.06em;
+    }
+    .nav-cta:hover { border-color: var(--accent); color: var(--accent); }
+
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      align-items: center;
+      padding: 7rem 3rem 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      opacity: 0.035;
+      background-image:
+        linear-gradient(to right, #f0ede8 1px, transparent 1px),
+        linear-gradient(to bottom, #f0ede8 1px, transparent 1px);
+      background-size: 80px 80px;
+    }
+    .glow {
+      position: absolute;
+      width: 520px;
+      height: 520px;
+      right: 8%;
+      top: 22%;
+      background: radial-gradient(circle, rgba(200,245,66,0.08), transparent 62%);
+      pointer-events: none;
+    }
+    .eyebrow {
+      font-size: 0.62rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 2rem;
+    }
+    h1 {
+      font-weight: 300;
+      font-size: clamp(2.6rem, 6vw, 5.4rem);
+      line-height: 1.04;
+      letter-spacing: -0.035em;
+      margin-bottom: 1.5rem;
+    }
+    h1 .mute { color: var(--muted); }
+    .sub {
+      color: var(--muted);
+      max-width: 460px;
+      line-height: 1.7;
+      font-weight: 300;
+      font-size: 1.02rem;
+      margin-bottom: 2.2rem;
+    }
+    .ctas { display: flex; flex-wrap: wrap; gap: 0.9rem; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.95rem 1.7rem;
+      font-size: 0.8rem;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      border: 1px solid transparent;
+    }
+    .btn-lime { background: var(--accent); color: var(--bg); }
+    .btn-ghost { border-color: #2a2a2a; color: var(--fg); }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+    .status {
+      position: absolute;
+      bottom: 2rem;
+      left: 3rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #4a4a4a;
+    }
+    .dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 6px rgba(200,245,66,0.12);
+    }
+    .status b { color: var(--accent); font-weight: 500; }
+
+    .stage { display: flex; align-items: center; justify-content: center; height: 100%; }
+    .orb-wrap {
+      width: min(380px, 70vw);
+      aspect-ratio: 1;
+      position: relative;
+      transform-style: preserve-3d;
+      animation: float 7s ease-in-out infinite;
+    }
+    .orb {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 32% 28%, #f6ffe8 0%, #c8f542 18%, #6d8a20 42%, #1a1a12 70%, #0c0c0c 100%);
+      box-shadow:
+        0 0 80px rgba(200,245,66,0.18),
+        inset -20px -30px 50px rgba(0,0,0,0.45),
+        inset 18px 16px 30px rgba(255,255,255,0.12);
+    }
+    .ring {
+      position: absolute;
+      inset: -12%;
+      border: 1px solid rgba(200,245,66,0.28);
+      border-radius: 50%;
+      transform: rotateX(68deg);
+      animation: spin 14s linear infinite;
+    }
+    .ring:nth-child(3) {
+      inset: -4%;
+      border-color: rgba(240,237,232,0.12);
+      animation-duration: 22s;
+      animation-direction: reverse;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotateX(8deg); }
+      50% { transform: translateY(-14px) rotateX(12deg); }
+    }
+    @keyframes spin { to { transform: rotateX(68deg) rotateZ(360deg); } }
+
+    section.block { padding: 7rem 3rem; border-top: 1px solid var(--line); }
+    .label {
+      font-size: 0.62rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 0.8rem;
+    }
+    h2 {
+      font-weight: 300;
+      font-size: clamp(1.8rem, 3.4vw, 3.1rem);
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+    }
+
+    .work-head { margin-bottom: 3rem; }
+    .work-head p { color: #4a4a4a; font-size: 0.75rem; letter-spacing: 0.08em; margin-top: 0.5rem; }
+    .ticks { display: flex; gap: 1.5rem; margin-bottom: 3rem; flex-wrap: wrap; }
+    .ticks button {
+      background: none;
+      border: none;
+      color: #4a4a4a;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid transparent;
+      font-family: inherit;
+    }
+    .ticks button.on { color: var(--accent); border-bottom-color: var(--accent); }
+
+    .case {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: 3rem;
+      align-items: center;
+    }
+    .num {
+      font-size: clamp(5rem, 14vw, 11rem);
+      font-weight: 300;
+      line-height: 0.8;
+      letter-spacing: -0.06em;
+      color: #1a1a1a;
+      margin-bottom: 0.4rem;
+    }
+    .case h3 {
+      font-weight: 300;
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      letter-spacing: -0.03em;
+      margin: 0.4rem 0 0.6rem;
+    }
+    .cat { font-size: 0.65rem; letter-spacing: 0.16em; color: #4a4a4a; }
+    .case p { color: var(--muted); line-height: 1.75; font-size: 0.92rem; max-width: 420px; margin: 1rem 0 1.4rem; }
+    .chips { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+    .chips span {
+      border: 1px solid var(--line);
+      color: #4a4a4a;
+      font-size: 0.68rem;
+      padding: 0.3rem 0.65rem;
+    }
+
+    .glass {
+      height: 360px;
+      border: 1px solid #2a2a2a;
+      background:
+        linear-gradient(145deg, rgba(200,245,66,0.08), rgba(12,12,12,0.2)),
+        #111;
+      transform: perspective(900px) rotateY(-14deg) rotateX(6deg);
+      box-shadow: 40px 30px 80px rgba(0,0,0,0.45);
+      padding: 1.4rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.7rem;
+    }
+    .tile {
+      background: #0a0a0a;
+      border: 1px solid #1f1f1f;
+      padding: 1rem;
+    }
+    .tile b { display: block; font-size: 0.8rem; font-weight: 500; margin-bottom: 0.25rem; }
+    .tile span { font-size: 0.68rem; color: #4a4a4a; }
+    .bar { width: 22px; height: 2px; background: var(--accent); margin-bottom: 0.7rem; }
+
+    .steps { margin-top: 3rem; border-top: 1px solid var(--line); }
+    .step {
+      display: grid;
+      grid-template-columns: 3rem 10rem 1fr;
+      gap: 1.5rem;
+      padding: 1.6rem 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .step .n { color: var(--dim); font-size: 0.7rem; letter-spacing: 0.12em; }
+    .step h4 { font-weight: 500; font-size: 0.82rem; letter-spacing: 0.1em; }
+    .step em { color: var(--muted); font-size: 0.85rem; font-style: italic; display: block; margin-bottom: 0.35rem; }
+    .step p { color: #4a4a4a; font-size: 0.82rem; line-height: 1.7; }
+
+    .contact h2 { margin-bottom: 1.2rem; }
+    .mail {
+      display: inline-block;
+      color: var(--fg);
+      text-decoration: none;
+      font-size: clamp(1.1rem, 2vw, 1.6rem);
+      font-weight: 300;
+      margin: 1.2rem 0 1.6rem;
+    }
+    .mail:hover { color: var(--accent); }
+    .avail { color: var(--accent); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; }
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 1.6rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      color: #2a2a2a;
+      font-size: 0.62rem;
+      letter-spacing: 0.08em;
+    }
+
+    .banner {
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+      z-index: 60;
+      background: #111;
+      border: 1px solid #2a2a2a;
+      color: var(--muted);
+      font-size: 0.68rem;
+      padding: 0.7rem 0.9rem;
+      max-width: 240px;
+      line-height: 1.5;
+    }
+    .banner strong { color: var(--fg); display: block; margin-bottom: 0.2rem; }
+
+    @media (max-width: 860px) {
+      body { cursor: auto; }
+      .cursor { display: none; }
+      .hero, .case, .step { grid-template-columns: 1fr; }
+      .hero, section.block, footer { padding-left: 1.4rem; padding-right: 1.4rem; }
+      .nav-links { display: none; }
+      .glass { transform: none; height: 280px; }
+      .orb-wrap { width: 220px; margin: 2rem auto 0; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .orb-wrap, .ring { animation: none; }
+      html { scroll-behavior: auto; }
+    }
+  </style>
+</head>
+<body>
+  <div class="cursor" id="cursor"></div>
+
+  <nav>
+    <a class="brand" href="#top"><span class="c">S</span><span class="a">S</span></a>
+    <div class="nav-links">
+      <a href="#work">Work</a>
+      <a href="#process">Process</a>
+      <a href="#contact">Contact</a>
+      <a class="nav-cta" href="#contact">Start a conversation</a>
+    </div>
+  </nav>
+
+  <header class="hero" id="top">
+    <div class="hero-grid"></div>
+    <div class="glow"></div>
+    <div>
+      <p class="eyebrow">Independent product engineer — New Delhi</p>
+      <h1>I don’t build<br />for everyone.<br /><span class="mute">I build what others<br />haven’t figured out yet.</span></h1>
+      <p class="sub">Ambitious ideas, difficult technical problems, and repetitive processes — turned into products, AI systems, and automations.</p>
+      <div class="ctas">
+        <a class="btn btn-lime" href="#work">See the work →</a>
+        <a class="btn btn-ghost" href="#contact">Have something challenging?</a>
+      </div>
+    </div>
+    <div class="stage">
+      <div class="orb-wrap">
+        <div class="orb"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+      </div>
+    </div>
+    <div class="status"><span class="dot"></span> Currently building <b>AI systems</b></div>
+  </header>
+
+  <section class="block" id="work">
+    <div class="work-head">
+      <span class="label">Selected work</span>
+      <h2>Things I’ve actually built.</h2>
+      <p>Not concepts. Not mockups. Real systems.</p>
+    </div>
+    <div class="ticks" id="ticks"></div>
+    <div class="case">
+      <div>
+        <div class="num" id="num">01</div>
+        <div class="cat" id="cat"></div>
+        <h3 id="name"></h3>
+        <p id="copy"></p>
+        <div class="chips" id="chips"></div>
+      </div>
+      <div class="glass" id="glass"></div>
+    </div>
+  </section>
+
+  <section class="block" id="process">
+    <span class="label">How I work</span>
+    <h2>From problem to production.</h2>
+    <div class="steps">
+      <div class="step"><span class="n">01</span><h4>UNDERSTAND</h4><div><em>What are we actually trying to solve?</em><p>The real problem first — not the stated requirement.</p></div></div>
+      <div class="step"><span class="n">02</span><h4>ARCHITECT</h4><div><em>What should the system look like?</em><p>Technology, data, and integrations decided before a line of code.</p></div></div>
+      <div class="step"><span class="n">03</span><h4>BUILD</h4><div><em>Turn the idea into a working product.</em><p>Full stack, production standard — not demo quality.</p></div></div>
+      <div class="step"><span class="n">04</span><h4>SHIP</h4><div><em>Deploy, integrate, make it usable.</em><p>Infrastructure and access for real users.</p></div></div>
+      <div class="step"><span class="n">05</span><h4>IMPROVE</h4><div><em>Measure, optimize, evolve.</em><p>Fix what the real world shows you.</p></div></div>
+    </div>
+  </section>
+
+  <section class="block contact" id="contact">
+    <span class="label">Contact</span>
+    <h2>Have something<br />difficult in mind?</h2>
+    <a class="mail" href="mailto:shivanshushukla2022@gmail.com">shivanshushukla2022@gmail.com →</a>
+    <p class="avail">● Available for select projects</p>
+  </section>
+
+  <footer>
+    <span>Shivanshu Shukla · Independent Product Engineer</span>
+    <span>© 2026 · Design preview — not the live site</span>
+  </footer>
+
+  <div class="banner">
+    <strong>Design preview</strong>
+    Scroll and click the work ticks. Nothing here is wired into the Next.js app yet.
+  </div>
+
+  <script>
+    const cursor = document.getElementById("cursor");
+    document.addEventListener("mousemove", (e) => {
+      cursor.style.left = e.clientX + "px";
+      cursor.style.top = e.clientY + "px";
+    });
+    document.querySelectorAll("a, button").forEach((el) => {
+      el.addEventListener("mouseenter", () => cursor.classList.add("on-btn"));
+      el.addEventListener("mouseleave", () => cursor.classList.remove("on-btn"));
+    });
+
+    const projects = [
+      {
+        num: "01",
+        name: "CollegeXConnect",
+        cat: "Product · Full-stack · Community",
+        copy: "A student platform for jobs, internships, resources, and community — 3,000+ users, 250K+ visitors.",
+        chips: ["3K+ users", "250K visitors", "100+ jobs"],
+        tiles: [
+          ["Dashboard", "Opportunity feed"],
+          ["Job board", "Verified roles"],
+          ["Resources", "Academic library"],
+          ["Community", "Student ecosystem"],
+        ],
+      },
+      {
+        num: "02",
+        name: "Wake-on-WhatsApp",
+        cat: "Infrastructure · Automation · AWS",
+        copy: "WhatsApp wakes a dormant environment, proxies traffic, then shuts it down after idle. About 97% less runtime cost.",
+        chips: ["~97% cost cut", "Zero manual wake"],
+        tiles: [
+          ["Message", "WhatsApp trigger"],
+          ["Gatekeeper", "Health check"],
+          ["Wake", "Bring EC2 up"],
+          ["Idle", "Auto-shutdown"],
+        ],
+      },
+      {
+        num: "03",
+        name: "Let's Meet",
+        cat: "AI · Real-time · Automation",
+        copy: "Meetings transcribed live, summarized, and turned into action items before the call is forgotten.",
+        chips: ["Live transcript", "AI summary", "Action items"],
+        tiles: [
+          ["Live", "Speech capture"],
+          ["Summary", "Instant digest"],
+          ["Actions", "Extracted items"],
+          ["Follow-up", "Automated"],
+        ],
+      },
+    ];
+
+    const ticks = document.getElementById("ticks");
+    projects.forEach((p, i) => {
+      const b = document.createElement("button");
+      b.textContent = p.num + "  " + p.name;
+      if (i === 0) b.classList.add("on");
+      b.addEventListener("click", () => show(i));
+      ticks.appendChild(b);
+    });
+
+    function show(i) {
+      const p = projects[i];
+      document.getElementById("num").textContent = p.num;
+      document.getElementById("cat").textContent = p.cat;
+      document.getElementById("name").textContent = p.name;
+      document.getElementById("copy").textContent = p.copy;
+      document.getElementById("chips").innerHTML = p.chips.map((c) => "<span>" + c + "</span>").join("");
+      document.getElementById("glass").innerHTML = p.tiles
+        .map((t, idx) => '<div class="tile">' + (idx === 0 ? '<div class="bar"></div>' : "") + "<b>" + t[0] + "</b><span>" + t[1] + "</span></div>")
+        .join("");
+      [...ticks.children].forEach((el, j) => el.classList.toggle("on", j === i));
+    }
+    show(0);
+  </script>
+</body>
+</html>
