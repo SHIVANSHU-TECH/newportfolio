@@ -208,7 +208,7 @@ export function createGalaxy(
   const targetLook = new THREE.Vector3();
   const look = new THREE.Vector3();
   const upY = new THREE.Vector3(0, 1, 0);
-  let selected: THREE.Object3D | null = null;
+  let selected: any = null;
   let dragging = false;
   let moved = false;
   let lastX = 0;
@@ -313,9 +313,9 @@ export function createGalaxy(
   fill.position.set(2, 3, 8);
   scene.add(fill);
 
-  const clickables: THREE.Object3D[] = [];
-  const planetMeshes: THREE.Mesh[] = [];
-  const labelNodes: { el: HTMLElement; mesh: THREE.Object3D }[] = [];
+  const clickables: any[] = [];
+  const planetMeshes: any[] = [];
+  const labelNodes: { el: HTMLElement; mesh: any }[] = [];
   const cloudsTex = cloudTexture();
 
   worlds.forEach((w) => {
@@ -385,7 +385,7 @@ export function createGalaxy(
   shipTag.innerHTML = "<span>ROCKET · About me</span>";
   labelsEl.appendChild(shipTag);
 
-  const projectLabel = (obj: THREE.Object3D, el: HTMLElement) => {
+  const projectLabel = (obj: any, el: HTMLElement) => {
     const v = obj.getWorldPosition(new THREE.Vector3());
     v.project(camera);
     el.style.left = `${(v.x * 0.5 + 0.5) * window.innerWidth}px`;
@@ -399,7 +399,7 @@ export function createGalaxy(
     targetLook.set(0, 0, 0);
   };
 
-  const focusPlanet = (mesh: THREE.Mesh) => {
+  const focusPlanet = (mesh: any) => {
     selected = mesh;
     const pos = mesh.getWorldPosition(new THREE.Vector3());
     const dir = pos.clone().normalize();
@@ -443,10 +443,10 @@ export function createGalaxy(
     raycaster.setFromCamera(pointer, camera);
     const hits = raycaster.intersectObjects(clickables, true);
     if (!hits.length) return;
-    let obj: THREE.Object3D | null = hits[0].object;
+    let obj: any = hits[0].object;
     while (obj && !obj.userData.kind) obj = obj.parent;
     if (!obj) return;
-    if (obj.userData.kind === "planet") focusPlanet(obj as THREE.Mesh);
+    if (obj.userData.kind === "planet") focusPlanet(obj);
     if (obj.userData.kind === "ship") focusShip();
   };
 
@@ -461,7 +461,7 @@ export function createGalaxy(
       const a = t * w.speed + w.phase;
       mesh.position.set(Math.cos(a) * w.orbit, w.y + Math.sin(t * 0.35 + w.phase) * 0.06, Math.sin(a) * w.orbit);
       mesh.rotation.y += 0.0035;
-      mesh.children.forEach((ch) => {
+      mesh.children.forEach((ch: any) => {
         if (ch.userData.spin) ch.rotation.y += ch.userData.spin;
       });
     });
@@ -471,12 +471,12 @@ export function createGalaxy(
     const tangent = new THREE.Vector3(-Math.sin(sa), 0.08, Math.cos(sa)).normalize();
     const upright = new THREE.Vector3(tangent.x * 0.42, 1, tangent.z * 0.42).normalize();
     rocket.quaternion.setFromUnitVectors(upY, upright);
-    const glow = rocket.userData.glow as THREE.Sprite | undefined;
+    const glow = rocket.userData.glow;
     if (glow) {
       const pulse = 1 + Math.sin(t * 18) * 0.12;
       glow.scale.set(2.4 * pulse, 3.2 * pulse, 1);
     }
-    const flame = rocket.userData.flame as THREE.MeshStandardMaterial | undefined;
+    const flame = rocket.userData.flame;
     if (flame) flame.emissiveIntensity = 3.2 + Math.sin(t * 22) * 0.7;
 
     if (!selected) {

@@ -1,6 +1,6 @@
 import * as THREE from "three";
 
-function mat(opts: THREE.MeshStandardMaterialParameters) {
+function mat(opts: Record<string, unknown>) {
   return new THREE.MeshStandardMaterial(opts);
 }
 
@@ -52,7 +52,7 @@ function plumeSprite() {
 }
 
 /** Orbital rocket — unmistakable silhouette. Nose is +Y. */
-export function makeRocket(): THREE.Group {
+export function makeRocket() {
   const g = new THREE.Group();
   const skin = panelSkin();
 
